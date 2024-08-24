@@ -33,7 +33,7 @@ public class Main {
             opcion = scan.nextInt();
             scan.nextLine();
 
-            switch(opcion) {
+            switch (opcion) {
 
                 case 1:
                     //Crear usuario
@@ -41,19 +41,20 @@ public class Main {
                     int legajo = contadorLegajo++;
 
                     System.out.println("Ingrese el nombre del usuario: ");
-                    scan.nextLine();
                     String nombre = scan.nextLine();
                     System.out.println("Ingrese el apellido del usuario: ");
                     String apellido = scan.nextLine();
                     System.out.println("Ingrese la password del usuario: ");
                     String password = scan.nextLine();
                     usuarioServicio.crearUsuario(id, nombre, apellido, legajo, password);
+                    break;
 
 
                 case 2:
                     //Actualizar usuario
                     System.out.println("Ingrese el legajo del usuario que desea actualizar");
                     int legajoActualizar = scan.nextInt();
+                    scan.nextLine();
                     System.out.println("Ingrese el nuevo nombre: ");
                     String nuevoNombre = scan.nextLine();
                     System.out.println("Ingrese el nuevo apellido: ");
@@ -62,15 +63,39 @@ public class Main {
                     break;
 
                 case 3:
-                    //Buscar usuario por ID
+                    //Buscar usuario por Legajo
                     System.out.println("Ingrese el legajo del usuario: ");
                     int legajoBuscar = scan.nextInt();
-                    Usuario usuarioLegajo = usuarioServicio.
+                    scan.nextLine();
+                    Usuario usuarioLegajo = usuarioServicio.buscarUsuarioporLegajo(legajoBuscar);
+                    if (usuarioLegajo != null) {
+                        System.out.println("Usuario encontrado: " + usuarioLegajo.getLegajo() + " " + usuarioLegajo.getNombre() + " " + usuarioLegajo.getApellido());
+                        System.out.println(" ");
+                    } else {
+                        System.out.println("Usuario no encontrado");
+                        System.out.println(" ");
+                    }
+                    break;
 
+                case 4:
+                    //Eliminar usuario
+                    System.out.println("Ingrese el legajo del usuario que desea eliminar: ");
+                    int legajoEliminar = scan.nextInt();
+                    scan.nextLine();
+                    usuarioServicio.eliminarUsuario(legajoEliminar);
+                    break;
 
+                case 0:
+                    //Salir
+                    System.out.println("Saliste de la interfaz de usuario");
+                    break;
+
+                default:
+                    System.out.println("Opcion no valida. Intente nuevamente");
 
             }
+
+            }  while (opcion!=0);
         }
 
     }
-}

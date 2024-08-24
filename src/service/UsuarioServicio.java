@@ -59,4 +59,14 @@ public class UsuarioServicio {
             }
         }
     }
+
+    //Buscar usuario
+    public Usuario buscarUsuarioporLegajo(int legajo) {
+        for(Usuario usuario : usuarios) {
+            if(usuario.getLegajo()==legajo) {
+                return usuario;
+            }
+        }
+        return null; //Retorna null si no encuentra ningun usuario por Legajo
+    }
 }
