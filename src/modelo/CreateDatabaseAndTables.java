@@ -55,28 +55,28 @@ public class CreateDatabaseAndTables {
                 "hora_fin TIME NOT NULL)";
         String movimientosInventarioTableSQL =
                 "CREATE TABLE IF NOT EXISTS movimientos_inventario (" +
-                        "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                        "articulo_id INT NOT NULL, " +
-                        "usuario_id INT NOT NULL, " +
-                        "turno_id INT NOT NULL, " +
-                        "subsector_id INT NOT NULL, " +
-                        "cantidad INT NOT NULL, " +
-                        "tipo_movimiento BOOL NOT NULL, " +
-                        "fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-                        "es_pedido BOOL DEFAULT 0, " +
-                        "es_diferencia BOOL DEFAULT 0, " +
-                        "FOREIGN KEY (articulo_id) REFERENCES articulos(id), " +
-                        "FOREIGN KEY (usuario_id) REFERENCES usuarios(id), " +
-                        "FOREIGN KEY (turno_id) REFERENCES turnos(id), " +
-                        "FOREIGN KEY (subsector_id) REFERENCES subsectores(id))";
+                "id INT PRIMARY KEY AUTO_INCREMENT, " +
+                "articulo_id INT NOT NULL, " +
+                "usuario_id INT NOT NULL, " +
+                "turno_id INT NOT NULL, " +
+                "subsector_id INT NOT NULL, " +
+                "cantidad INT NOT NULL, " +
+                "tipo_movimiento BOOL NOT NULL, " +
+                "fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                "es_pedido BOOL DEFAULT 0, " +
+                "es_diferencia BOOL DEFAULT 0, " +
+                "FOREIGN KEY (articulo_id) REFERENCES articulos(id), " +
+                "FOREIGN KEY (usuario_id) REFERENCES usuarios(id), " +
+                "FOREIGN KEY (turno_id) REFERENCES turnos(id), " +
+                "FOREIGN KEY (subsector_id) REFERENCES subsectores(id))";
         String balancesTableSQL =
                 "CREATE TABLE IF NOT EXISTS balances (" +
-                        "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                        "articulo_id INT NOT NULL, " +
-                        "stock INT NOT NULL, " +
-                        "stock_real INT NOT NULL, " +
-                        "fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-                        "FOREIGN KEY (articulo_id) REFERENCES articulos(id))";
+                "id INT PRIMARY KEY AUTO_INCREMENT, " +
+                "articulo_id INT NOT NULL, " +
+                "stock INT NOT NULL, " +
+                "stock_real INT NOT NULL, " +
+                "fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                "FOREIGN KEY (articulo_id) REFERENCES articulos(id))";
 
         try (Connection conn = DatabaseConnection.getConnection();
             Statement stmt = conn.createStatement()) {
