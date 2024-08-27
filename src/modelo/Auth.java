@@ -66,8 +66,4 @@ public class Auth {
 
         return null;
     }
-
-    public static void main(String[] args) {
-        System.out.println(login(12345, "ASDasd123"));
-    }
 }
