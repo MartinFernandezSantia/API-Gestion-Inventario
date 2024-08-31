@@ -1,4 +1,4 @@
-package com.lmfm.api.modelo;
+package com.lmfm.api.bd;
 
 import java.sql.Connection;
 import java.sql.Statement;

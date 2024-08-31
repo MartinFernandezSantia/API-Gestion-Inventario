@@ -19,7 +19,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getApellido());
             stmt.setInt(3, usuario.getLegajo());
-            stmt.setString(4, usuario.getContrasena());
+            stmt.setString(4, usuario.getPassword());
             stmt.setInt(5, usuario.getPermisoId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -82,7 +82,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getApellido());
-            stmt.setString(3, usuario.getContrasena());
+            stmt.setString(3, usuario.getPassword());
             stmt.setInt(4, usuario.getPermisoId());
             stmt.setInt(5, usuario.getLegajo());
             stmt.executeUpdate();

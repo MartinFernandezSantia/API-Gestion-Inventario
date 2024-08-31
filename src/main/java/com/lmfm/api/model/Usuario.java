@@ -8,19 +8,19 @@ public class Usuario {
     private String apellido;
     private Timestamp fechaHora;
     private int legajo;
-    private String contrasena;
+    private String password;
     private int permisoId;
 
     // Constructor, getters y setters
 
     public Usuario() {}
 
-    public Usuario(int id, String nombre, String apellido, int legajo, String contrasena, int permisoId) {
+    public Usuario(int id, String nombre, String apellido, int legajo, String password) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.legajo = legajo;
-        this.contrasena = contrasena;
+        this.password = password;
         this.permisoId = permisoId;
     }
 
@@ -64,12 +64,12 @@ public class Usuario {
         this.legajo = legajo;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setContrasena(String password) {
+        this.password = password;
     }
 
     public int getPermisoId() {

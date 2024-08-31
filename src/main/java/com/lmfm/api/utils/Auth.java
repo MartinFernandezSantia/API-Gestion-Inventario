@@ -1,7 +1,8 @@
-package com.lmfm.api.modelo;
+package com.lmfm.api.utils;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import clase.Usuario;
+import com.lmfm.api.model.Usuario;
+import com.lmfm.api.bd.*;
 
 import java.sql.*;
 
