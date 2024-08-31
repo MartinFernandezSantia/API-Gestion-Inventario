@@ -3,7 +3,6 @@ package modelo;
 import org.mindrot.jbcrypt.BCrypt;
 import clase.Usuario;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 
 public class Auth {

@@ -2,6 +2,7 @@ package modelo;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.time.ZonedDateTime;
@@ -10,6 +11,12 @@ import java.util.Date;
 public class JWTManager {
     private static final String SECRET_KEY = "CykY#fE3*x&SedZBZiYDV29MHNr$2CT#yXZYM7QT!";
 
+    /**
+     * Genera un Token JWT para la autenticación de los usuarios
+     * @param id Id del usuario
+     * @param permiso Nivel de permiso del usuario
+     * @return String token
+     */
     public static String generarToken(int id, int permiso) {
         String token = JWT.create()
                 .withSubject(String.valueOf(id))
@@ -20,9 +27,28 @@ public class JWTManager {
         return token;
     }
 
+    /**
+     * Valida un Token generado por la API
+     * @param token String token
+     * @return DecodedJWT o null si es invalido
+     */
     public static DecodedJWT validarToken(String token) {
-        return JWT.require(Algorithm.HMAC256(SECRET_KEY))
-                .build()
-                .verify(token);
+        try {
+            return JWT.require(Algorithm.HMAC256(SECRET_KEY))
+                    .build()
+                    .verify(token);
+        }
+        catch (JWTVerificationException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static void main(String[] args) {
+        String token = generarToken(1, 1);
+        System.out.println(token);
+        System.out.println(validarToken(token));
+
     }
 }
