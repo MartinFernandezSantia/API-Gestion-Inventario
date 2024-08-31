@@ -1,4 +1,4 @@
-package model;
+package com.lmfm.api.model;
 
 import java.sql.Timestamp;
 

@@ -1,72 +1,36 @@
-package service;
+package com.lmfm.api.service;
 
-import clase.Usuario;
+import com.lmfm.api.dao.UsuarioDAO;
+import com.lmfm.api.model.Usuario;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 public class UsuarioServicio {
 
-    private ArrayList<Usuario> usuarios; //ArrayList que contiene usuarios
+    private UsuarioDAO usuarioDAO;
 
-    public UsuarioServicio() {
+    public UsuarioServicio(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
     }
 
-    public UsuarioServicio(ArrayList<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void crearUsuario(Usuario usuario) {
+        usuarioDAO.insertarUsuario(usuario);
     }
 
-    //Crear nuevo usuario
-    public void crearUsuario(int id,String nombre,String apellido,int legajo,String password){
-        Usuario nuevoUsuario = new Usuario(id,nombre,apellido,legajo,password);
-        usuarios.add(nuevoUsuario);
-
+    public List<Usuario> getUsuarios() {
+        return usuarioDAO.obtenerTodosLosUsuarios();
     }
 
-    //Listar usuario
-    public ArrayList<Usuario> getUsuarios() {
-        return usuarios;
+    public void actualizarUsuario(Usuario usuario) {
+        usuarioDAO.actualizarUsuario(usuario);
     }
 
-    //Actualizar usuario
-    public void actualizarUsuario(int legajoActualizar,String nuevoNombre,String nuevoApellido){
-        for(Usuario usuario : usuarios){
-            if(usuario.getId()==legajoActualizar){
-                usuario.setNombre(nuevoNombre);
-                usuario.setApellido(nuevoApellido);
-                return;
-            }
-        }
+    public void eliminarUsuario(int id) {
+        usuarioDAO.eliminarUsuarioPorId(id);
     }
 
-    //Actualizar password usuario
-    public void actualizarPasswordUsuario(int id,String nuevaPassword) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                usuario.setPassword(nuevaPassword);
-                return;
-            }
-        }
-    }
-
-    //Eliminar usuario
-    public void eliminarUsuario(int id){
-        Iterator<Usuario> it = usuarios.iterator();
-
-        while(it.hasNext()){
-            if(it.next().getId()==id){
-                it.remove();
-            }
-        }
-    }
-
-    //Buscar usuario
-    public Usuario buscarUsuarioporLegajo(int legajo) {
-        for(Usuario usuario : usuarios) {
-            if(usuario.getLegajo()==legajo) {
-                return usuario;
-            }
-        }
-        return null; //Retorna null si no encuentra ningun usuario por Legajo
+    public Optional<Usuario> buscarUsuarioPorLegajo(int legajo) {
+        return usuarioDAO.obtenerUsuarioPorLegajo(legajo);
     }
 }

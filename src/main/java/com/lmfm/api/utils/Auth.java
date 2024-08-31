@@ -1,5 +1,6 @@
-package com.lmfm.api.modelo;
+package com.lmfm.api.utils;
 
+import com.lmfm.api.bd.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 import com.lmfm.api.model.Usuario;
 

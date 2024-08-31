@@ -1,4 +1,4 @@
-package com.lmfm.api.utils;
+package com.lmfm.api.bd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

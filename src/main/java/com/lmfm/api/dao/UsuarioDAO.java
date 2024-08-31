@@ -1,6 +1,6 @@
 package com.lmfm.api.dao;
 
-import model.Usuario;
+import com.lmfm.api.model.Usuario;
 import java.util.List;
 import java.util.Optional;
 

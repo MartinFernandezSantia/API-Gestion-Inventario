@@ -1,2 +1,104 @@
-package com.lmfm.api.dao;public class ArticuloDAOImpl {
+package com.lmfm.api.dao;
+
+import com.lmfm.api.model.Articulo;
+import com.lmfm.api.bd.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class ArticuloDAOImpl implements ArticuloDAO {
+
+    @Override
+    public void insertarArticulo(Articulo articulo) {
+        String sql = "INSERT INTO articulos (codigo, nombre, stock, limite, categoria_id) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, articulo.getCodigo());
+            stmt.setString(2, articulo.getNombre());
+            stmt.setInt(3, articulo.getStock());
+            stmt.setObject(4, articulo.getLimite(), Types.INTEGER);
+            stmt.setInt(5, articulo.getCategoriaId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Optional<Articulo> obtenerArticuloPorCodigo(int codigo) {
+        String sql = "SELECT * FROM articulos WHERE codigo = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, codigo);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Articulo articulo = new Articulo();
+                articulo.setId(rs.getInt("id"));
+                articulo.setCodigo(rs.getInt("codigo"));
+                articulo.setNombre(rs.getString("nombre"));
+                articulo.setStock(rs.getInt("stock"));
+                articulo.setLimite(rs.getObject("limite", Integer.class));
+                articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
+                articulo.setCategoriaId(rs.getInt("categoria_id"));
+                return Optional.of(articulo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Articulo> obtenerTodosLosArticulos() {
+        List<Articulo> articulos = new ArrayList<>();
+        String sql = "SELECT * FROM articulos";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Articulo articulo = new Articulo();
+                articulo.setId(rs.getInt("id"));
+                articulo.setCodigo(rs.getInt("codigo"));
+                articulo.setNombre(rs.getString("nombre"));
+                articulo.setStock(rs.getInt("stock"));
+                articulo.setLimite(rs.getObject("limite", Integer.class));
+                articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
+                articulo.setCategoriaId(rs.getInt("categoria_id"));
+                articulos.add(articulo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return articulos;
+    }
+
+    @Override
+    public void actualizarArticulo(Articulo articulo) {
+        String sql = "UPDATE articulos SET nombre = ?, stock = ?, limite = ?, categoria_id = ? WHERE codigo = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, articulo.getNombre());
+            stmt.setInt(2, articulo.getStock());
+            stmt.setObject(3, articulo.getLimite(), Types.INTEGER);
+            stmt.setInt(4, articulo.getCategoriaId());
+            stmt.setInt(5, articulo.getCodigo());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void eliminarArticuloPorId(int id) {
+        String sql = "DELETE FROM articulos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
