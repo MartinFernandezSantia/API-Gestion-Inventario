@@ -1,8 +1,7 @@
-package com.lmfm.api.utils;
+package com.lmfm.api.modelo;
 
-import com.lmfm.api.bd.DatabaseConnection;
-import org.mindrot.jbcrypt.BCrypt;
-import com.lmfm.api.model.Usuario;
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import clase.Usuario;
 
 import java.sql.*;
 
@@ -14,7 +13,7 @@ public class Auth {
      * @return password hasheada.
      */
     public static String hashPassword(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
+        return BCrypt.withDefaults().hashToString(12, password.toCharArray());
     }
 
     /**
@@ -23,7 +22,7 @@ public class Auth {
      * @return true si las contraseña coinciden, sino false.
      */
     public static Boolean checkPassword(String password, String hashed) {
-        return BCrypt.checkpw(password, hashed);
+        return BCrypt.verifyer().verify(password.toCharArray(), hashed).verified;
     }
 
     /**

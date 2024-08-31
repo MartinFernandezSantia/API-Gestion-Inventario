@@ -1,4 +1,4 @@
-package com.lmfm.api.utils;
+package com.lmfm.api.modelo;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

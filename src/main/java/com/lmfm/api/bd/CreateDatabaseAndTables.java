@@ -1,4 +1,4 @@
-package com.lmfm.api.bd;
+package com.lmfm.api.modelo;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -79,7 +79,7 @@ public class CreateDatabaseAndTables {
                 "FOREIGN KEY (articulo_id) REFERENCES articulos(id))";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
+            Statement stmt = conn.createStatement()) {
 
             // Crear la Base de Datos
             stmt.executeUpdate(createDbSQL);
