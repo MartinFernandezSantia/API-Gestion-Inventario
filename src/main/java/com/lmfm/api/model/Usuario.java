@@ -1,5 +1,8 @@
 package com.lmfm.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lmfm.api.dto.UsuarioRequest;
+
 import java.sql.Timestamp;
 
 public class Usuario {
@@ -8,8 +11,9 @@ public class Usuario {
     private String apellido;
     private Timestamp fechaHora;
     private int legajo;
-    private String password;
     private int permisoId;
+    @JsonIgnore // Evita que se retorne la password en los endpoints
+    private String password;
 
     // Constructor, getters y setters
 
@@ -21,7 +25,15 @@ public class Usuario {
         this.apellido = apellido;
         this.legajo = legajo;
         this.password = password;
-        this.permisoId = permisoId;
+        //this.permisoId = permisoId;
+    }
+
+    public Usuario(UsuarioRequest usuarioRequest) {
+        this.nombre = usuarioRequest.getNombre();
+        this.apellido = usuarioRequest.getApellido();
+        this.legajo = usuarioRequest.getLegajo();
+        this.password = usuarioRequest.getPassword();
+        this.permisoId = usuarioRequest.getPermisoId();
     }
 
     public int getId() {
@@ -68,7 +80,7 @@ public class Usuario {
         return password;
     }
 
-    public void setContrasena(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

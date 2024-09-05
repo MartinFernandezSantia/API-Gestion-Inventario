@@ -22,8 +22,8 @@ public class UsuarioServicio {
         return usuarioDAO.obtenerTodosLosUsuarios();
     }
 
-    public void actualizarUsuario(Usuario usuario) {
-        usuarioDAO.actualizarUsuario(usuario);
+    public void actualizarUsuario(Usuario usuario, String nuevaPassword) {
+        usuarioDAO.actualizarUsuario(usuario, nuevaPassword);
     }
 
     public void eliminarUsuario(int id) {

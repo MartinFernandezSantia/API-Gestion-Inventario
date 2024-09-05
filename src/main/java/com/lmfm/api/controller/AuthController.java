@@ -29,7 +29,6 @@ public class AuthController {
         else {
             JsonNode respuesta = new ObjectMapper().createObjectNode().put("error", "Legajo y/o contraseña incorrecto/s");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(respuesta);
-
         }
 
     }

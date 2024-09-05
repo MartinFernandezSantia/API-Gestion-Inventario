@@ -1,7 +1,12 @@
 package com.lmfm.api.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class LoginRequest {
+    @NotNull
     private int legajo;
+    @NotEmpty
     private String password;
 
     public LoginRequest() {}

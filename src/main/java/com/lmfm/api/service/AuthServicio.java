@@ -5,8 +5,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.lmfm.api.dao.PermisoDAOImpl;
 import com.lmfm.api.dao.UsuarioDAOImpl;
 import com.lmfm.api.dto.LoginRequest;
+import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
 
 import java.util.Date;
@@ -65,8 +67,7 @@ public class AuthServicio {
 
     /**
      * Autentifica al usuario y retorna una instancia del mismo si los datos son correctos.
-     * @param legajo n° de legajo del usuario.
-     * @param password contraseña del usuario.
+     * @param loginRequest instancia de LoginRequest con legajo y password
      * @return token JWT o null si los datos no son correctos.
      */
     public static Optional<String> login(LoginRequest loginRequest) {

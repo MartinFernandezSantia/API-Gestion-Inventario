@@ -107,4 +107,8 @@ public class CreateDatabaseAndTables {
             e.printStackTrace();
         }
     }
+
+    public static void main(String[] args) {
+        create();
+    }
 }
