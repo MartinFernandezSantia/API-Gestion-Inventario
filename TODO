@@ -48,3 +48,5 @@ Posible solucion:
 15. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
 
 16. Debatir sobre cuan relevante es el nivel de permiso o si habria que remover dicha columna
+
+17. Almacenar refreshTokens en BD para poder revocarlos si es necesario

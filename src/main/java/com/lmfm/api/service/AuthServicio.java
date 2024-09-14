@@ -10,11 +10,16 @@ import com.lmfm.api.dto.LoginRequest;
 import com.lmfm.api.model.Usuario;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class AuthServicio {
-    private static final String SECRET_KEY = "CykY#fE3*x&SedZBZiYDV29MHNr$2CT#yXZYM7QT!";
+    private static final String SECRET_KEY_ACCESS = "CykY#fE3*x&SedZBZiYDV29MHNr$2CT#yXZYM7QT!";
+    private static final String SECRET_KEY_REFRESH = "GXASQKyqtjo^BxgG3x5MybhVcQKa&$WFoH!tm3An&a%!iD*@76$jY^";
+    private static final long ACCESS_TOKEN_EXPIRATION = 3600000; // 1 hora
+    private static final long REFRESH_TOKEN_EXPIRATION = 86400000L * 30; // 30 días
 
     /**
      * Genera un Token JWT para la autenticación de los usuarios
@@ -22,21 +27,40 @@ public class AuthServicio {
      * @param permiso Nivel de permiso del usuario
      * @return String token
      */
-    public static String generarToken(int legajo, int permiso) {
+    public static String generarAccessToken(int legajo, int permiso) {
 
         return JWT.create()
                 .withClaim("permiso", permiso)
                 .withClaim("legajo", legajo)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 3600000)) // 1 hora de validez
-                .sign(Algorithm.HMAC256(SECRET_KEY));
+                .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
+                .sign(Algorithm.HMAC256(SECRET_KEY_ACCESS));
+    }
+
+    public static String generarRefreshToken(int legajo) {
+        return JWT.create()
+                .withClaim("legajo", legajo)
+                .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
+                .sign(Algorithm.HMAC256(SECRET_KEY_REFRESH));
     }
 
     /**
      * Valida un Token generado por la API
      */
-    public static Optional<DecodedJWT> validarToken(String token) {
+    public static Optional<DecodedJWT> validarAccessToken(String token) {
         try {
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SECRET_KEY_ACCESS))
+                    .build()
+                    .verify(token);
+            return Optional.of(decodedJWT);
+        } catch (JWTVerificationException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<DecodedJWT> validarRefreshToken(String token) {
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SECRET_KEY_REFRESH))
                     .build()
                     .verify(token);
             return Optional.of(decodedJWT);
@@ -69,18 +93,22 @@ public class AuthServicio {
      * @param loginRequest instancia de LoginRequest con legajo y password
      * @return token JWT o null si los datos no son correctos.
      */
-    public static Optional<String> login(LoginRequest loginRequest) {
+    public static Map<String, String> login(LoginRequest loginRequest) {
+        Map<String, String> tokens = new HashMap<>();
         Optional<Usuario> usuario = new UsuarioDAOImpl().obtenerUsuarioPorLegajo(loginRequest.getLegajo());
 
         if (usuario.isPresent()) {
             if (AuthServicio.checkPassword(loginRequest.getPassword(), usuario.get().getPassword())) {
-                String token = generarToken(usuario.get().getId(), usuario.get().getPermiso().getId());
+                String accessToken = generarAccessToken(usuario.get().getId(), usuario.get().getPermiso().getId());
+                String refreshToken = generarRefreshToken(usuario.get().getLegajo());
+                tokens.put("accessToken", accessToken);
+                tokens.put("refreshToken", refreshToken);
 
-                return Optional.of(token);
+                return tokens;
             }
         }
 
-        return Optional.empty();
+        return null;
     }
 
     public static boolean validarPassword(String password) {
@@ -98,6 +126,11 @@ public class AuthServicio {
         return patron.matcher(password).matches();
     }
 
+    public static void main(String[] args) {
+        String token = generarRefreshToken(1112);
+        System.out.println(validarRefreshToken(token).isPresent());
+        System.out.println(token);
+    }
 
     // TODO: resetPassword - logout
 }
