@@ -14,13 +14,37 @@ ya tenia el valor dado y retornar una respuesta apropiada en el endpoint -> 409 
 
 6. Al hacer un GET de los usuarios via endpoint, no devolver la contraseña ✅
 
-7. Agregar requisitos para las contraseñas?
+7. Agregar requisitos para las contraseñas? ✅
 
 8. ¿Deberiamos permitir que la contraseña de los usuarios sea actualizada en el mismo formulario
 para actualizar el resto de los datos, o en uno separado? UX vs Seguridad
 
-9. No se pueden sobreescribir metodos estaticos de interfaces.
+9. No se pueden sobreescribir metodos estaticos de interfaces. ✅
 
-10. Agregar obtenerUsuarioPorId a UsuarioDAO.
+10. Agregar obtenerUsuarioPorId a UsuarioDAO. ✅
 
-11. @Repository para todos los DAOs
+11. @Repository para todos los DAOs ❌
+
+12. Deberiamos hacer que la combinacion de nombre y apellido de los usuarios sea UNIQUE?
+
+13. Como gestionamos la seguridad de las contraseñas de los usuarios comunes y corrientes?
+- Los usuarios son todos registrados por los administradores, eso incluye sus contraseñas.
+- Imponer a usuarios comunes contraseñas complejas con mayusculas, minusculas, numeros y
+caracteres especiales puede resultar engorroso.
+
+Posible solucion:
+    1. El admin crea al nuevo usuario
+    2. Se genera una contraseña aleatoria y segura o fija y segura
+    3. En caso de ser aleatoria se envia por mail al usuario
+    4. En caso de ser fija el admin se la provee al usuario
+    5. Al iniciar sesion por primera vez, se fuerza el cambio de contraseña
+
+14. Charla con Santini:
+1. Controlador(comprobaciones de los datos) recibe DTO convierte a modelo
+2. Servicio (regex contraseña no interacción con BD) recibe modelo envia DTO
+3. Interfaz DAO -> Implementación de ModeloDAOImpl. Entra DTO y se modifica, no sale nada
+4. Servicio convierto DTO a Modelo -> !! Modifique esta ultima parte para que retorne un booleano
+
+15. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
+
+16. Debatir sobre cuan relevante es el nivel de permiso o si habria que remover dicha columna

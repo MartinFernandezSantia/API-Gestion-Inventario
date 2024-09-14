@@ -1,6 +1,7 @@
-package com.lmfm.api.dao;
+package com.lmfm.api.dao.mysql;
 
 
+import com.lmfm.api.dao.MovimientosInventarioDAO;
 import com.lmfm.api.model.MovimientosInventario;
 import com.lmfm.api.bd.DatabaseConnection;
 

@@ -1,6 +1,9 @@
-package com.lmfm.api.dao;
+package com.lmfm.api.dao.mysql;
 
 
+import com.lmfm.api.dao.UsuarioDAO;
+import com.lmfm.api.dto.UsuarioRequest;
+import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
 import com.lmfm.api.bd.DatabaseConnection;
 import com.lmfm.api.service.AuthServicio;
@@ -11,19 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
-    public boolean insertarUsuario(Usuario usuario) {
+    public boolean insertarUsuario(UsuarioRequest usuarioRequest) {
         String sql = "INSERT INTO usuarios (nombre, apellido, legajo, contraseña, permiso_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, usuario.getNombre());
-            stmt.setString(2, usuario.getApellido());
-            stmt.setInt(3, usuario.getLegajo());
-            stmt.setString(4, usuario.getPassword());
-            stmt.setInt(5, usuario.getPermisoId());
+            stmt.setString(1, usuarioRequest.getNombre());
+            stmt.setString(2, usuarioRequest.getApellido());
+            stmt.setInt(3, usuarioRequest.getLegajo());
+            stmt.setString(4, usuarioRequest.getPassword());
+            stmt.setInt(5, usuarioRequest.getPermisoId());
 
             int rowsAfectadas = stmt.executeUpdate();
 
@@ -32,7 +34,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
                 if (rs.next()) {
                     int id = rs.getInt(1);
-                    usuario.setId(id);
+                    usuarioRequest.setId(id);
                 }
             }
 
@@ -53,14 +55,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setInt(1, legajo);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                // !! Cambiar esta linea cuando se implemente PermisoServicio!!
+                Optional<Permiso> permiso = new PermisoDAOImpl().obtenerPermisoPorId(rs.getInt("permiso_id"));
                 Usuario usuario = new Usuario();
+
                 usuario.setId(rs.getInt("id"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
                 usuario.setFechaHora(rs.getTimestamp("fecha_hora"));
                 usuario.setLegajo(rs.getInt("legajo"));
                 usuario.setPassword(rs.getString("contraseña"));
-                usuario.setPermisoId(rs.getInt("permiso_id"));
+                usuario.setPermiso(permiso.get());
+
                 return Optional.of(usuario);
             }
         } catch (SQLException e) {
@@ -69,6 +75,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         return Optional.empty();
     }
 
+    @Override
     public Optional<Usuario> obtenerUsuarioPorId(int id) {
         String sql = "SELECT * FROM usuarios WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -76,14 +83,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                // !! Cambiar esta linea cuando se implemente PermisoServicio!!
+                Optional<Permiso> permiso = new PermisoDAOImpl().obtenerPermisoPorId(rs.getInt("permiso_id"));
                 Usuario usuario = new Usuario();
+
                 usuario.setId(rs.getInt("id"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
                 usuario.setFechaHora(rs.getTimestamp("fecha_hora"));
                 usuario.setLegajo(rs.getInt("legajo"));
                 usuario.setPassword(rs.getString("contraseña"));
-                usuario.setPermisoId(rs.getInt("permiso_id"));
+                usuario.setPermiso(permiso.get());
+
                 return Optional.of(usuario);
             }
         } catch (SQLException e) {
@@ -100,14 +111,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
+                // !! Cambiar esta linea cuando se implemente PermisoServicio!!
+                Optional<Permiso> permiso = new PermisoDAOImpl().obtenerPermisoPorId(rs.getInt("permiso_id"));
                 Usuario usuario = new Usuario();
+
                 usuario.setId(rs.getInt("id"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
                 usuario.setFechaHora(rs.getTimestamp("fecha_hora"));
                 usuario.setLegajo(rs.getInt("legajo"));
                 usuario.setPassword(rs.getString("contraseña"));
-                usuario.setPermisoId(rs.getInt("permiso_id"));
+                usuario.setPermiso(permiso.get());
+
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -117,9 +132,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
-    public boolean actualizarUsuario(Usuario usuario, String nuevaPassword) {
+    public boolean actualizarUsuario(UsuarioRequest usuarioRequest) {
         // Construir la consulta SQL con un SET dinámico basado en los campos proporcionados
         StringBuilder sql = new StringBuilder("UPDATE usuarios SET nombre = ?, apellido = ?, permiso_id = ?, legajo = ?");
+        String nuevaPassword = usuarioRequest.getPassword();
 
         // Solo agregar la columna de contraseña si se proporciona una nueva contraseña
         if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
@@ -132,10 +148,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
              PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
             // Establecer los valores para los campos obligatorios
-            stmt.setString(1, usuario.getNombre());
-            stmt.setString(2, usuario.getApellido());
-            stmt.setInt(3, usuario.getPermisoId());
-            stmt.setInt(4, usuario.getLegajo());
+            stmt.setString(1, usuarioRequest.getNombre());
+            stmt.setString(2, usuarioRequest.getApellido());
+            stmt.setInt(3, usuarioRequest.getPermisoId());
+            stmt.setInt(4, usuarioRequest.getLegajo());
 
             // Si se proporciona una nueva contraseña, establecerla en el PreparedStatement
             int index = 5;
@@ -144,7 +160,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             }
 
             // Establecer el valor del legajo
-            stmt.setInt(index, usuario.getId());
+            stmt.setInt(index, usuarioRequest.getId());
 
             // Ejecutar la actualización
             stmt.executeUpdate();
@@ -153,6 +169,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(3);
         return false;
     }
 

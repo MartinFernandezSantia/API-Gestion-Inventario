@@ -1,5 +1,6 @@
-package com.lmfm.api.dao;
+package com.lmfm.api.dao.mysql;
 
+import com.lmfm.api.dao.TurnoDAO;
 import com.lmfm.api.model.Turno;
 import com.lmfm.api.bd.DatabaseConnection;
 

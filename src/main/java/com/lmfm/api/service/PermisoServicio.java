@@ -2,7 +2,7 @@ package com.lmfm.api.service;
 
 
 import com.lmfm.api.dao.PermisoDAO;
-import com.lmfm.api.dao.PermisoDAOImpl;
+import com.lmfm.api.dao.mysql.PermisoDAOImpl;
 import com.lmfm.api.model.Permiso;
 
 import java.util.List;

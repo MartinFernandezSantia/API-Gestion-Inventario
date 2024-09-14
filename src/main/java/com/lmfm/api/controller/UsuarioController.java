@@ -1,10 +1,12 @@
 package com.lmfm.api.controller;
 
-import com.lmfm.api.dao.UsuarioDAOImpl;
+import com.lmfm.api.dao.mysql.PermisoDAOImpl;
+import com.lmfm.api.dao.mysql.UsuarioDAOImpl;
 import com.lmfm.api.dto.UsuarioRequest;
+import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
-import com.lmfm.api.service.AuthServicio;
 import com.lmfm.api.service.UsuarioServicio;
+import com.lmfm.api.translators.UsuarioTranslator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +22,25 @@ import java.util.Optional;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioDAOImpl usuarioDAO;
+    private UsuarioTranslator usuarioTranslator;
+
+    @Autowired
+    private  UsuarioServicio usuarioServicio;
 
     @PostMapping
     public ResponseEntity<?> crearUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
-        usuarioRequest.setPassword(AuthServicio.hashPassword(usuarioRequest.getPassword()));
-        Usuario nuevoUsuario = new Usuario(usuarioRequest);
+        // !! Cambiar esta linea cuando se implemente PermisoServicio!!
+        PermisoDAOImpl permisoDAO = new PermisoDAOImpl();
+        Optional<Permiso> permiso = permisoDAO.obtenerPermisoPorId(usuarioRequest.getPermisoId());
+        if (permiso.isEmpty()) {
+            return ResponseEntity.badRequest().body("Datos incorrectos.");
+        }
 
-        // ¡Implementar esta linea directamente en el if cuando el metodo sea static!
-        boolean crear = usuarioDAO.insertarUsuario(nuevoUsuario);
+        Usuario nuevoUsuario = usuarioTranslator.fromDTO(usuarioRequest, permiso.get());
+        UsuarioServicio usuarioServicio = new UsuarioServicio(nuevoUsuario);
 
         // Si hubo un problema al intentar crear el usuario
-        if (!crear) {
+        if (!usuarioServicio.crearUsuario()) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
@@ -45,7 +54,7 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<?> getUsuarios() {
-        List<Usuario> usuarios = usuarioDAO.obtenerTodosLosUsuarios();
+        List<Usuario> usuarios = usuarioServicio.getUsuarios();
 
         // Si no hay usuarios
         if (usuarios.isEmpty()) {
@@ -57,7 +66,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUsuarioPorId(@PathVariable int id) {
-        Optional<Usuario> usuario = usuarioDAO.obtenerUsuarioPorId(id);
+        Optional<Usuario> usuario = usuarioServicio.getUsuarioPorId(id);
 
         // Si el ID no coincide con un usuario en la BD
         if (usuario.isEmpty()) {
@@ -69,7 +78,7 @@ public class UsuarioController {
 
     @GetMapping("/legajo/{legajo}")
     public ResponseEntity<?> getUsuarioPorLegajo(@PathVariable int legajo) {
-        Optional<Usuario> usuario = usuarioDAO.obtenerUsuarioPorLegajo(legajo);
+        Optional<Usuario> usuario = usuarioServicio.getUsuarioPorLegajo(legajo);
 
         // Si el Legajo no coincide con un usuario en la BD
         if (usuario.isEmpty()) {
@@ -81,34 +90,28 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuarioPorId(@PathVariable int id) {
-        Optional<Usuario> usuario = usuarioDAO.obtenerUsuarioPorId(id);
-
-        // Si el ID no coincidio con ningun usuario existente
-        if (usuario.isEmpty()) {
+        // Si hubo algun error al eliminar el usuario
+        if (!usuarioServicio.eliminarUsuario(id)) {
             return ResponseEntity.notFound().build();
         }
-
-        usuarioDAO.eliminarUsuarioPorId(id);
 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping()
     public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioRequest usuarioRequest) {
-        Optional<Usuario> usuario = usuarioDAO.obtenerUsuarioPorId(usuarioRequest.getId());
-
-        if (usuario.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        // !! Cambiar esta linea cuando se implemente PermisoServicio!!
+        PermisoDAOImpl permisoDAO = new PermisoDAOImpl();
+        Optional<Permiso> permiso = permisoDAO.obtenerPermisoPorId(usuarioRequest.getPermisoId());
+        if (permiso.isEmpty()) {
+            System.out.println(1);
+            return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
-        usuario.get().setNombre(usuarioRequest.getNombre());
-        usuario.get().setApellido(usuarioRequest.getApellido());
-        usuario.get().setLegajo(usuarioRequest.getLegajo());
-        usuario.get().setPermisoId(usuarioRequest.getPermisoId());
+        usuarioServicio = new UsuarioServicio(usuarioTranslator.fromDTO(usuarioRequest, permiso.get()));
 
-        boolean actualizado = usuarioDAO.actualizarUsuario(usuario.get(), usuarioRequest.getPassword());
-
-        if(!actualizado) {
+        // Si hubo algun problema al actualizar al usuario
+        if(!usuarioServicio.actualizarUsuario()) {
             return ResponseEntity.badRequest().build();
         }
 

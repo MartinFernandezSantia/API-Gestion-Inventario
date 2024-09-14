@@ -3,17 +3,25 @@ package com.lmfm.api.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class UsuarioRequest {
     private int id;
-    @NotEmpty()
+
+    @NotEmpty
     private String nombre;
-    @NotEmpty()
+
+    @NotEmpty
     private String apellido;
-    @NotNull()
+
+    @NotNull
+    @Positive
     private int legajo;
+
     private String password;
-    @NotNull()
+
+    @NotNull
+    @Positive
     private int permisoId;
 
     public int getId() {

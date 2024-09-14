@@ -1,13 +1,15 @@
 package com.lmfm.api.dao;
 
+import com.lmfm.api.dto.UsuarioRequest;
 import com.lmfm.api.model.Usuario;
 import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioDAO {
-    boolean insertarUsuario(Usuario usuario);
+    boolean insertarUsuario(UsuarioRequest usuarioRequest);
     Optional<Usuario> obtenerUsuarioPorLegajo(int legajo);
+    Optional<Usuario> obtenerUsuarioPorId(int id);
     List<Usuario> obtenerTodosLosUsuarios();
-    boolean actualizarUsuario(Usuario usuario, String nuevaPassword);
+    boolean actualizarUsuario(UsuarioRequest usuarioRequest);
     boolean eliminarUsuarioPorId(int id);
 }

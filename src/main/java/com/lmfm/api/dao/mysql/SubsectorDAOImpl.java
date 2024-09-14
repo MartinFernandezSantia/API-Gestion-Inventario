@@ -1,5 +1,6 @@
-package com.lmfm.api.dao;
+package com.lmfm.api.dao.mysql;
 
+import com.lmfm.api.dao.SubsectorDAO;
 import com.lmfm.api.model.Subsector;
 import com.lmfm.api.bd.DatabaseConnection;
 

@@ -1,6 +1,8 @@
-package com.lmfm.api.dao;
+package com.lmfm.api.dao.mysql;
 
-import com.lmfm.api.model.Permiso;
+
+import com.lmfm.api.dao.SectorDAO;
+import com.lmfm.api.model.Sector;
 import com.lmfm.api.bd.DatabaseConnection;
 
 import java.sql.*;
@@ -8,15 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PermisoDAOImpl implements PermisoDAO {
+public class SectorDAOImpl implements SectorDAO {
 
     @Override
-    public void insertarPermiso(Permiso permiso) {
-        String sql = "INSERT INTO permisos (nivel, descripcion) VALUES (?, ?)";
+    public void insertarSector(Sector sector) {
+        String sql = "INSERT INTO sectores (nombre) VALUES (?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, permiso.getNivel());
-            stmt.setString(2, permiso.getDescripcion());
+            stmt.setString(1, sector.getNombre());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -24,18 +25,17 @@ public class PermisoDAOImpl implements PermisoDAO {
     }
 
     @Override
-    public Optional<Permiso> obtenerPermisoPorNivel(int nivel) {
-        String sql = "SELECT * FROM permisos WHERE nivel = ?";
+    public Optional<Sector> obtenerSectorPorId(int id) {
+        String sql = "SELECT * FROM sectores WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, nivel);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Permiso permiso = new Permiso();
-                permiso.setId(rs.getInt("id"));
-                permiso.setNivel(rs.getInt("nivel"));
-                permiso.setDescripcion(rs.getString("descripcion"));
-                return Optional.of(permiso);
+                Sector sector = new Sector();
+                sector.setId(rs.getInt("id"));
+                sector.setNombre(rs.getString("nombre"));
+                return Optional.of(sector);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,32 +44,31 @@ public class PermisoDAOImpl implements PermisoDAO {
     }
 
     @Override
-    public List<Permiso> obtenerTodosLosPermisos() {
-        List<Permiso> permisos = new ArrayList<>();
-        String sql = "SELECT * FROM permisos";
+    public List<Sector> obtenerTodosLosSectores() {
+        List<Sector> sectores = new ArrayList<>();
+        String sql = "SELECT * FROM sectores";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Permiso permiso = new Permiso();
-                permiso.setId(rs.getInt("id"));
-                permiso.setNivel(rs.getInt("nivel"));
-                permiso.setDescripcion(rs.getString("descripcion"));
-                permisos.add(permiso);
+                Sector sector = new Sector();
+                sector.setId(rs.getInt("id"));
+                sector.setNombre(rs.getString("nombre"));
+                sectores.add(sector);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return permisos;
+        return sectores;
     }
 
     @Override
-    public void actualizarPermiso(Permiso permiso) {
-        String sql = "UPDATE permisos SET descripcion = ? WHERE nivel = ?";
+    public void actualizarSector(Sector sector) {
+        String sql = "UPDATE sectores SET nombre = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, permiso.getDescripcion());
-            stmt.setInt(2, permiso.getNivel());
+            stmt.setString(1, sector.getNombre());
+            stmt.setInt(2, sector.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,8 +76,8 @@ public class PermisoDAOImpl implements PermisoDAO {
     }
 
     @Override
-    public void eliminarPermisoPorId(int id) {
-        String sql = "DELETE FROM permisos WHERE id = ?";
+    public void eliminarSectorPorId(int id) {
+        String sql = "DELETE FROM sectores WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

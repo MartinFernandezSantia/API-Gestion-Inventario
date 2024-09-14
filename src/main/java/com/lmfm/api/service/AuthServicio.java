@@ -5,14 +5,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.lmfm.api.dao.PermisoDAOImpl;
-import com.lmfm.api.dao.UsuarioDAOImpl;
+import com.lmfm.api.dao.mysql.UsuarioDAOImpl;
 import com.lmfm.api.dto.LoginRequest;
-import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class AuthServicio {
     private static final String SECRET_KEY = "CykY#fE3*x&SedZBZiYDV29MHNr$2CT#yXZYM7QT!";
@@ -75,7 +74,7 @@ public class AuthServicio {
 
         if (usuario.isPresent()) {
             if (AuthServicio.checkPassword(loginRequest.getPassword(), usuario.get().getPassword())) {
-                String token = generarToken(usuario.get().getId(), usuario.get().getPermisoId());
+                String token = generarToken(usuario.get().getId(), usuario.get().getPermiso().getId());
 
                 return Optional.of(token);
             }
@@ -83,6 +82,22 @@ public class AuthServicio {
 
         return Optional.empty();
     }
+
+    public static boolean validarPassword(String password) {
+        // Expresión regular para la contraseña:
+        // (?=.*[a-z]): al menos una minúscula
+        // (?=.*[A-Z]): al menos una mayúscula
+        // (?=.*\d): al menos un dígito
+        // (?=.*[@$!%*?&]): al menos un carácter especial (puedes agregar más si es necesario)
+        // .{8,}: al menos 8 caracteres de longitud
+
+        String regex = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,}$";
+
+        // Compilamos el patrón y lo probamos con la contraseña
+        Pattern patron = Pattern.compile(regex);
+        return patron.matcher(password).matches();
+    }
+
 
     // TODO: resetPassword - logout
 }

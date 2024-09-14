@@ -1,5 +1,6 @@
-package com.lmfm.api.dao;
+package com.lmfm.api.dao.mysql;
 
+import com.lmfm.api.dao.BalancesDAO;
 import com.lmfm.api.model.Balances;
 import com.lmfm.api.bd.DatabaseConnection;
 

@@ -11,7 +11,8 @@ public class Usuario {
     private String apellido;
     private Timestamp fechaHora;
     private int legajo;
-    private int permisoId;
+    private Permiso permiso;
+
     @JsonIgnore // Evita que se retorne la password en los endpoints
     private String password;
 
@@ -19,21 +20,12 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(int id, String nombre, String apellido, int legajo, String password) {
-        this.id = id;
+    public Usuario(String nombre, String apellido, int legajo, String password, Permiso permiso) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.legajo = legajo;
         this.password = password;
-        //this.permisoId = permisoId;
-    }
-
-    public Usuario(UsuarioRequest usuarioRequest) {
-        this.nombre = usuarioRequest.getNombre();
-        this.apellido = usuarioRequest.getApellido();
-        this.legajo = usuarioRequest.getLegajo();
-        this.password = usuarioRequest.getPassword();
-        this.permisoId = usuarioRequest.getPermisoId();
+        this.permiso = permiso;
     }
 
     public int getId() {
@@ -84,12 +76,12 @@ public class Usuario {
         this.password = password;
     }
 
-    public int getPermisoId() {
-        return permisoId;
+    public Permiso getPermiso() {
+        return permiso;
     }
 
-    public void setPermisoId(int permisoId) {
-        this.permisoId = permisoId;
+    public void setPermiso(Permiso permiso) {
+        this.permiso = permiso;
     }
 
 
