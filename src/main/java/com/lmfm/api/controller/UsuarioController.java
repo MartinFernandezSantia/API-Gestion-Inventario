@@ -21,26 +21,20 @@ import java.util.Optional;
 @RequestMapping("usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioTranslator usuarioTranslator;
-
-    @Autowired
-    private  UsuarioServicio usuarioServicio;
-
     @PostMapping
     public ResponseEntity<?> crearUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         // !! Cambiar esta linea cuando se implemente PermisoServicio!!
         PermisoDAOImpl permisoDAO = new PermisoDAOImpl();
         Optional<Permiso> permiso = permisoDAO.obtenerPermisoPorId(usuarioRequest.getPermisoId());
+
         if (permiso.isEmpty()) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
-        Usuario nuevoUsuario = usuarioTranslator.fromDTO(usuarioRequest, permiso.get());
-        UsuarioServicio usuarioServicio = new UsuarioServicio(nuevoUsuario);
+        Usuario nuevoUsuario = UsuarioTranslator.fromDTO(usuarioRequest, permiso.get());
 
         // Si hubo un problema al intentar crear el usuario
-        if (!usuarioServicio.crearUsuario()) {
+        if (!UsuarioServicio.crearUsuario(nuevoUsuario)) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
@@ -54,7 +48,7 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<?> getUsuarios() {
-        List<Usuario> usuarios = usuarioServicio.getUsuarios();
+        List<Usuario> usuarios = UsuarioServicio.getUsuarios();
 
         // Si no hay usuarios
         if (usuarios.isEmpty()) {
@@ -66,7 +60,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUsuarioPorId(@PathVariable int id) {
-        Optional<Usuario> usuario = usuarioServicio.getUsuarioPorId(id);
+        Optional<Usuario> usuario = UsuarioServicio.getUsuarioPorId(id);
 
         // Si el ID no coincide con un usuario en la BD
         if (usuario.isEmpty()) {
@@ -78,7 +72,7 @@ public class UsuarioController {
 
     @GetMapping("/legajo/{legajo}")
     public ResponseEntity<?> getUsuarioPorLegajo(@PathVariable int legajo) {
-        Optional<Usuario> usuario = usuarioServicio.getUsuarioPorLegajo(legajo);
+        Optional<Usuario> usuario = UsuarioServicio.getUsuarioPorLegajo(legajo);
 
         // Si el Legajo no coincide con un usuario en la BD
         if (usuario.isEmpty()) {
@@ -91,7 +85,7 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuarioPorId(@PathVariable int id) {
         // Si hubo algun error al eliminar el usuario
-        if (!usuarioServicio.eliminarUsuario(id)) {
+        if (!UsuarioServicio.eliminarUsuario(id)) {
             return ResponseEntity.notFound().build();
         }
 
@@ -103,15 +97,15 @@ public class UsuarioController {
         // !! Cambiar esta linea cuando se implemente PermisoServicio!!
         PermisoDAOImpl permisoDAO = new PermisoDAOImpl();
         Optional<Permiso> permiso = permisoDAO.obtenerPermisoPorId(usuarioRequest.getPermisoId());
+
         if (permiso.isEmpty()) {
-            System.out.println(1);
             return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
-        usuarioServicio = new UsuarioServicio(usuarioTranslator.fromDTO(usuarioRequest, permiso.get()));
+        Usuario usuario = UsuarioTranslator.fromDTO(usuarioRequest, permiso.get());
 
         // Si hubo algun problema al actualizar al usuario
-        if(!usuarioServicio.actualizarUsuario()) {
+        if(!UsuarioServicio.actualizarUsuario(usuario)) {
             return ResponseEntity.badRequest().build();
         }
 

@@ -7,7 +7,6 @@ import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
 import com.lmfm.api.bd.DatabaseConnection;
 import com.lmfm.api.service.AuthServicio;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,10 +16,11 @@ import java.util.Optional;
 public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
-    public boolean insertarUsuario(UsuarioRequest usuarioRequest) {
+    public void insertarUsuario(UsuarioRequest usuarioRequest) {
         String sql = "INSERT INTO usuarios (nombre, apellido, legajo, contraseña, permiso_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             stmt.setString(1, usuarioRequest.getNombre());
             stmt.setString(2, usuarioRequest.getApellido());
             stmt.setInt(3, usuarioRequest.getLegajo());
@@ -37,14 +37,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                     usuarioRequest.setId(id);
                 }
             }
-
-            return true;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return false;
     }
 
     @Override
@@ -163,14 +158,14 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setInt(index, usuarioRequest.getId());
 
             // Ejecutar la actualización
-            stmt.executeUpdate();
-            return true;
+            int filasAfectadas = stmt.executeUpdate();
+
+            return filasAfectadas > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        System.out.println(3);
-        return false;
     }
 
     @Override
@@ -178,12 +173,14 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         String sql = "DELETE FROM usuarios WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, id);
-            stmt.executeUpdate();
-            return true;
+            int filasAfectadas = stmt.executeUpdate();
+
+            return filasAfectadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }
