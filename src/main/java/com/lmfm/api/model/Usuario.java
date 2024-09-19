@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lmfm.api.dto.UsuarioRequest;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Usuario {
-    private int id;
+    private Integer id;
     private String nombre;
     private String apellido;
     private Timestamp fechaHora;
@@ -28,11 +29,11 @@ public class Usuario {
         this.permiso = permiso;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -84,7 +85,33 @@ public class Usuario {
         this.permiso = permiso;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
 
+        if (obj == null || getClass() != obj.getClass()) { return false; }
+
+        final Usuario usuario = (Usuario) obj;
+
+        if (this.id != usuario.getId()) { return false; }
+        if (!this.nombre.equals(usuario.getNombre())) { return false; }
+        if (!this.apellido.equals(usuario.getApellido())) { return false; }
+        if (this.legajo != usuario.getLegajo()) { return false; }
+
+        return this.permiso.equals(usuario.permiso);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 11 * hash + this.id;
+        hash = 11 * hash + Objects.hashCode(this.nombre);
+        hash = 11 * hash + Objects.hashCode(this.apellido);
+        hash = 11 * hash + this.legajo;
+        hash = 11 * hash + Objects.hashCode(this.permiso);
+
+        return hash;
+    }
 
     @Override
     public String toString() {

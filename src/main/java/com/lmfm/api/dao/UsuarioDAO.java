@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioDAO {
-    boolean insertarUsuario(UsuarioRequest usuarioRequest);
+    void insertarUsuario(UsuarioRequest usuarioRequest);
     Optional<Usuario> obtenerUsuarioPorLegajo(int legajo);
     Optional<Usuario> obtenerUsuarioPorId(int id);
     List<Usuario> obtenerTodosLosUsuarios();

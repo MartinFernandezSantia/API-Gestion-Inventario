@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UsuarioTranslator {
 
-    public Usuario fromDTO(UsuarioRequest usuarioRequest, Permiso permiso) {
+    public static Usuario fromDTO(UsuarioRequest usuarioRequest, Permiso permiso) {
         Usuario usuario = new Usuario();
 
         usuario.setId(usuarioRequest.getId());
@@ -22,7 +22,7 @@ public class UsuarioTranslator {
         return usuario;
     }
 
-    public UsuarioRequest toDTO(Usuario usuario) {
+    public static UsuarioRequest toDTO(Usuario usuario) {
         UsuarioRequest usuarioRequest = new UsuarioRequest();
 
         usuarioRequest.setId(usuario.getId());

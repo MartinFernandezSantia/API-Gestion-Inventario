@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class UsuarioRequest {
-    private int id;
+    private Integer id;
 
     @NotEmpty
     private String nombre;
@@ -24,11 +24,11 @@ public class UsuarioRequest {
     @Positive
     private int permisoId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

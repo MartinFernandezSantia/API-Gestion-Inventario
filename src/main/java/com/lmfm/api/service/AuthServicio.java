@@ -32,7 +32,7 @@ public class AuthServicio {
         return JWT.create()
                 .withClaim("permiso", permiso)
                 .withClaim("legajo", legajo)
-                .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
+                .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC256(SECRET_KEY_ACCESS));
     }
 
@@ -95,14 +95,14 @@ public class AuthServicio {
      */
     public static Map<String, String> login(LoginRequest loginRequest) {
         Map<String, String> tokens = new HashMap<>();
-        Optional<Usuario> usuario = new UsuarioDAOImpl().obtenerUsuarioPorLegajo(loginRequest.getLegajo());
+        Optional<Usuario> usuario = UsuarioServicio.getUsuarioPorLegajo(loginRequest.getLegajo());
 
         if (usuario.isPresent()) {
             if (AuthServicio.checkPassword(loginRequest.getPassword(), usuario.get().getPassword())) {
                 String accessToken = generarAccessToken(usuario.get().getId(), usuario.get().getPermiso().getId());
-                String refreshToken = generarRefreshToken(usuario.get().getLegajo());
+                // String refreshToken = generarRefreshToken(usuario.get().getLegajo());
                 tokens.put("accessToken", accessToken);
-                tokens.put("refreshToken", refreshToken);
+                // tokens.put("refreshToken", refreshToken);
 
                 return tokens;
             }
@@ -124,12 +124,6 @@ public class AuthServicio {
         // Compilamos el patrón y lo probamos con la contraseña
         Pattern patron = Pattern.compile(regex);
         return patron.matcher(password).matches();
-    }
-
-    public static void main(String[] args) {
-        String token = generarRefreshToken(1112);
-        System.out.println(validarRefreshToken(token).isPresent());
-        System.out.println(token);
     }
 
     // TODO: resetPassword - logout

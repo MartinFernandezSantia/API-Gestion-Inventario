@@ -1,36 +1,12 @@
-1. Comprobar datos que entran por endpoints ✅
-
 2. Crear middleware
-
-3. Hacer que todos los metodos retornen algo, porque si quiero insertar un usuario pero el catch
-del metodo me impide siquiera saber si hubo un problema, entonces en el endpoint correspondiente
-no puedo retornar si se creo el usuario exitosamente o si hubo un error.
-
-4. ¿Para que se supone que sirve, o como se supone que deberia funcionar y/o utilizar
-UsuarioServicio y los demas Servicios?
-
-5. Ver si se puede identificar cuando un error al crear un recurso se debe a que un campo UNIQUE
-ya tenia el valor dado y retornar una respuesta apropiada en el endpoint -> 409 Conflict
-
-6. Al hacer un GET de los usuarios via endpoint, no devolver la contraseña ✅
-
-7. Agregar requisitos para las contraseñas? ✅
 
 8. ¿Deberiamos permitir que la contraseña de los usuarios sea actualizada en el mismo formulario
 para actualizar el resto de los datos, o en uno separado? UX vs Seguridad
 
-9. No se pueden sobreescribir metodos estaticos de interfaces. ✅
-
-10. Agregar obtenerUsuarioPorId a UsuarioDAO. ✅
-
-11. @Repository para todos los DAOs ❌
-
-12. Deberiamos hacer que la combinacion de nombre y apellido de los usuarios sea UNIQUE?
-
 13. Como gestionamos la seguridad de las contraseñas de los usuarios comunes y corrientes?
 - Los usuarios son todos registrados por los administradores, eso incluye sus contraseñas.
 - Imponer a usuarios comunes contraseñas complejas con mayusculas, minusculas, numeros y
-caracteres especiales puede resultar engorroso.
+caracteres especiales puede resultar engorroso. ⏰
 
 Posible solucion:
     1. El admin crea al nuevo usuario
@@ -47,6 +23,8 @@ Posible solucion:
 
 15. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
 
-16. Debatir sobre cuan relevante es el nivel de permiso o si habria que remover dicha columna
+16. Debatir sobre cuan relevante es el nivel de permiso o si habria que remover dicha columna ✅ (Eliminar nivel)
 
-17. Almacenar refreshTokens en BD para poder revocarlos si es necesario
+17. Almacenar refreshTokens en BD para poder revocarlos si es necesario ⏰
+
+18. Cambiar tiempo de access token ⏰

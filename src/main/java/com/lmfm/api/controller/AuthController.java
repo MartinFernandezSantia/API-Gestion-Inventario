@@ -37,7 +37,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/refresh")
+    // @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
         String token = request.get("refreshToken");
         Optional<DecodedJWT> decodedJWT = AuthServicio.validarRefreshToken(token);

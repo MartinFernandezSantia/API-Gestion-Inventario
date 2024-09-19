@@ -12,60 +12,47 @@ import java.util.Optional;
 @Repository
 public class UsuarioServicio {
 
-    private UsuarioDAOImpl usuarioDAO = new UsuarioDAOImpl();
-    private UsuarioTranslator usuarioTranslator = new UsuarioTranslator();
-    private Usuario usuario;
+    private static UsuarioDAOImpl usuarioDAO = new UsuarioDAOImpl();
 
-    public  UsuarioServicio() {}
+    public UsuarioServicio() {}
 
-    public UsuarioServicio(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    public static boolean crearUsuario(Usuario usuario) {
+        boolean passwordValida = AuthServicio.validarPassword(usuario.getPassword());
 
-    public boolean crearUsuario() {
-        boolean passwordValida = AuthServicio.validarPassword(this.usuario.getPassword());
-        Optional<Usuario> usuarioExiste = this.usuarioDAO.obtenerUsuarioPorLegajo(this.usuario.getLegajo());
-
-        // Verifico si la contraseña cumple con los requerimientos o si el usuario ya existe
-        if (!passwordValida || usuarioExiste.isPresent()) {
+        // Verifico si la contraseña cumple con los requerimientos
+        if (!passwordValida) {
             return false;
         }
 
         // Hasheo la contraseña
-        this.usuario.setPassword(AuthServicio.hashPassword(this.usuario.getPassword()));
+        usuario.setPassword(AuthServicio.hashPassword(usuario.getPassword()));
 
-        return usuarioDAO.insertarUsuario(usuarioTranslator.toDTO(this.usuario));
+        // Creo al usuario
+        UsuarioRequest usuarioRequest = UsuarioTranslator.toDTO(usuario);
+        usuarioDAO.insertarUsuario(usuarioRequest);
+
+        // Si el usuario fue creado correctamente id != null
+        return usuarioRequest.getId() != null;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarioDAO.obtenerTodosLosUsuarios();
+    public static boolean actualizarUsuario(Usuario usuario) {
+
+        return usuarioDAO.actualizarUsuario(UsuarioTranslator.toDTO(usuario));
     }
 
-    public boolean actualizarUsuario() {
-        // Si el usuario no esta en la BD
-        if (getUsuarioPorId(usuario.getId()).isEmpty()) {
-            System.out.println(2);
-            System.out.println(usuario.getId());
-            return false;
-        }
-
-        return usuarioDAO.actualizarUsuario(usuarioTranslator.toDTO(usuario));
-    }
-
-    public boolean eliminarUsuario(int id) {
-        // Si no hay usuario que coincida con el id
-        if (getUsuarioPorId(id).isEmpty()) {
-            return false;
-        }
-
+    public static boolean eliminarUsuario(int id) {
         return usuarioDAO.eliminarUsuarioPorId(id);
     }
 
-    public Optional<Usuario> getUsuarioPorLegajo(int legajo) {
+    public static Optional<Usuario> getUsuarioPorLegajo(int legajo) {
         return usuarioDAO.obtenerUsuarioPorLegajo(legajo);
     }
 
-    public Optional<Usuario> getUsuarioPorId(int id) {
+    public static Optional<Usuario> getUsuarioPorId(int id) {
         return usuarioDAO.obtenerUsuarioPorId(id);
+    }
+
+    public static List<Usuario> getUsuarios() {
+        return usuarioDAO.obtenerTodosLosUsuarios();
     }
 }
