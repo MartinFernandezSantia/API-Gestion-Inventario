@@ -1,29 +1,28 @@
-package com.lmfm.api.model;
+package com.lmfm.api.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lmfm.api.model.Categoria;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 
-public class Articulo {
+public class ArticuloRequest {
     private int id;
     private int codigo;
+    @NotEmpty
     private String nombre;
+    @NotNull
+    @Min(value = 0)
     private int stock;
+    @Min(value = 0)
     private Integer limite;
-    private Timestamp fechaHora;
-    private Categoria categoria;
 
-    // Constructor, getters y setters
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private String fechaHora;
 
-    public Articulo() {}
-
-    public Articulo(int id, int codigo, String nombre, int stock, Integer limite, Timestamp fechaHora, Categoria categoria) {
-        this.id = id;
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.stock = stock;
-        this.limite = limite;
-        this.fechaHora = fechaHora;
-        this.categoria = categoria;
-    }
+    private int categoriaId;
 
     public int getId() {
         return id;
@@ -65,19 +64,19 @@ public class Articulo {
         this.limite = limite;
     }
 
-    public Timestamp getFechaHora() {
+    public String getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(Timestamp fechaHora) {
+    public void setFechaHora(String fechaHora) {
         this.fechaHora = fechaHora;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public int getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoriaId(int categoriaId) {
+        this.categoriaId = categoriaId;
     }
 }

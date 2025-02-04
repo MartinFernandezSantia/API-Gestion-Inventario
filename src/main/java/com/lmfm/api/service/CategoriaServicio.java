@@ -1,6 +1,7 @@
 package com.lmfm.api.service;
 
 import com.lmfm.api.dao.CategoriaDAO;
+import com.lmfm.api.dao.mysql.CategoriaDAOImpl;
 import com.lmfm.api.model.Categoria;
 
 import java.util.List;
@@ -8,11 +9,9 @@ import java.util.Optional;
 
 public class CategoriaServicio {
 
-    private final CategoriaDAO categoriaDAO;
+    private final CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
 
-    public CategoriaServicio(CategoriaDAO categoriaDAO) {
-        this.categoriaDAO = categoriaDAO;
-    }
+    public CategoriaServicio() {}
 
     // Crear nueva categoría
     public void crearCategoria(String nombre) {
