@@ -16,8 +16,7 @@ public class PermisoDAOImpl implements PermisoDAO {
         String sql = "INSERT INTO permisos (nivel, descripcion) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, permiso.getNivel());
-            stmt.setString(2, permiso.getDescripcion());
+            stmt.setString(2, permiso.getNombre());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,8 +33,7 @@ public class PermisoDAOImpl implements PermisoDAO {
             if (rs.next()) {
                 Permiso permiso = new Permiso();
                 permiso.setId(rs.getInt("id"));
-                permiso.setNivel(rs.getInt("nivel"));
-                permiso.setDescripcion(rs.getString("descripcion"));
+                permiso.setNombre(rs.getString("nombre"));
                 return Optional.of(permiso);
             }
         } catch (SQLException e) {
@@ -53,8 +51,7 @@ public class PermisoDAOImpl implements PermisoDAO {
             if (rs.next()) {
                 Permiso permiso = new Permiso();
                 permiso.setId(rs.getInt("id"));
-                permiso.setNivel(rs.getInt("nivel"));
-                permiso.setDescripcion(rs.getString("descripcion"));
+                permiso.setNombre(rs.getString("nombre"));
                 return Optional.of(permiso);
             }
         } catch (SQLException e) {
@@ -73,8 +70,7 @@ public class PermisoDAOImpl implements PermisoDAO {
             while (rs.next()) {
                 Permiso permiso = new Permiso();
                 permiso.setId(rs.getInt("id"));
-                permiso.setNivel(rs.getInt("nivel"));
-                permiso.setDescripcion(rs.getString("descripcion"));
+                permiso.setNombre(rs.getString("nombre"));
                 permisos.add(permiso);
             }
         } catch (SQLException e) {
@@ -84,27 +80,29 @@ public class PermisoDAOImpl implements PermisoDAO {
     }
 
     @Override
-    public void actualizarPermiso(Permiso permiso) {
-        String sql = "UPDATE permisos SET descripcion = ? WHERE nivel = ?";
+    public boolean actualizarPermiso(Permiso permiso) {
+        String sql = "UPDATE permisos SET nombre = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, permiso.getDescripcion());
-            stmt.setInt(2, permiso.getNivel());
-            stmt.executeUpdate();
+            stmt.setString(1, permiso.getNombre());
+            stmt.setInt(2, permiso.getId());
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarPermisoPorId(int id) {
+    public boolean eliminarPermisoPorId(int id) {
         String sql = "DELETE FROM permisos WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

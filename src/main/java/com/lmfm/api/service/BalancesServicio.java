@@ -1,54 +1,45 @@
 package com.lmfm.api.service;
 
 import com.lmfm.api.dao.BalancesDAO;
+import com.lmfm.api.dao.mysql.BalancesDAOImpl;
+import com.lmfm.api.dto.BalancesRequest;
 import com.lmfm.api.model.Balances;
+import com.lmfm.api.translators.BalancesTranslator;
 
 import java.util.List;
 import java.util.Optional;
 
 public class BalancesServicio {
 
-    private final BalancesDAO balancesDAO;
-
-    public BalancesServicio(BalancesDAO balancesDAO) {
-        this.balancesDAO = balancesDAO;
-    }
+    private static BalancesDAO balancesDAO = new BalancesDAOImpl();
 
     // Crear nuevo balance
-    public void crearBalance(int articuloId, int stock, int stockReal, java.sql.Timestamp fechaHora) {
-        Balances nuevoBalance = new Balances();
-        nuevoBalance.setArticuloId(articuloId);
-        nuevoBalance.setStock(stock);
-        nuevoBalance.setStockReal(stockReal);
-        nuevoBalance.setFechaHora(fechaHora);
-        balancesDAO.insertarBalance(nuevoBalance);
+    public static boolean crearBalance(Balances balance) {
+        BalancesRequest balancesRequest = BalancesTranslator.toDTO(balance);
+        balancesDAO.insertarBalance(balancesRequest);
+
+        return balancesRequest.getId() != null;
     }
 
     // Listar balances
-    public List<Balances> obtenerTodosLosBalances() {
+    public static List<Balances> obtenerTodosLosBalances() {
         return balancesDAO.obtenerTodosLosBalances();
     }
 
     // Actualizar balance
-    public void actualizarBalance(int id, int articuloId, int stock, int stockReal, java.sql.Timestamp fechaHora) {
-        Optional<Balances> balanceOpt = balancesDAO.obtenerBalancePorId(id);
-        if (balanceOpt.isPresent()) {
-            Balances balance = balanceOpt.get();
-            balance.setArticuloId(articuloId);
-            balance.setStock(stock);
-            balance.setStockReal(stockReal);
-            balance.setFechaHora(fechaHora);
-            balancesDAO.actualizarBalance(balance);
-        }
+    public static boolean actualizarBalance(Balances balance) {
+        BalancesRequest balancesRequest = BalancesTranslator.toDTO(balance);
+
+        return balancesDAO.actualizarBalance(balancesRequest);
     }
 
     // Eliminar balance
-    public void eliminarBalance(int id) {
-        balancesDAO.eliminarBalancePorId(id);
+    public static boolean eliminarBalance(int id) {
+        return balancesDAO.eliminarBalancePorId(id);
     }
 
     // Buscar balance por ID
-    public Balances buscarBalancePorId(int id) {
+    public static Balances buscarBalancePorId(int id) {
         Optional<Balances> balanceOpt = balancesDAO.obtenerBalancePorId(id);
         return balanceOpt.orElse(null); // Retorna null si no encuentra ningún balance por ID
     }

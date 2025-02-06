@@ -3,7 +3,7 @@ package com.lmfm.api.model;
 import java.sql.Timestamp;
 
 public class Articulo {
-    private int id;
+    private Integer id;
     private int codigo;
     private String nombre;
     private int stock;
@@ -15,7 +15,7 @@ public class Articulo {
 
     public Articulo() {}
 
-    public Articulo(int id, int codigo, String nombre, int stock, Integer limite, Timestamp fechaHora, Categoria categoria) {
+    public Articulo(Integer id, int codigo, String nombre, int stock, Integer limite, Timestamp fechaHora, Categoria categoria) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -29,7 +29,7 @@ public class Articulo {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

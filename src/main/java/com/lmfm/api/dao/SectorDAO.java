@@ -9,7 +9,7 @@ public interface SectorDAO {
     void insertarSector(Sector sector);
     Optional<Sector> obtenerSectorPorId(int id);
     List<Sector> obtenerTodosLosSectores();
-    void actualizarSector(Sector sector);
-    void eliminarSectorPorId(int id);
+    boolean actualizarSector(Sector sector);
+    boolean eliminarSectorPorId(int id);
 }
 

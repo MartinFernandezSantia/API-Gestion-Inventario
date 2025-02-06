@@ -1,8 +1,11 @@
 package com.lmfm.api.dao.mysql;
 
 import com.lmfm.api.dao.BalancesDAO;
+import com.lmfm.api.dto.BalancesRequest;
+import com.lmfm.api.model.Articulo;
 import com.lmfm.api.model.Balances;
 import com.lmfm.api.bd.DatabaseConnection;
+import com.lmfm.api.service.ArticuloServicio;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,15 +15,26 @@ import java.util.Optional;
 public class BalancesDAOImpl implements BalancesDAO {
 
     @Override
-    public void insertarBalance(Balances balance) {
+    public void insertarBalance(BalancesRequest balance) {
         String sql = "INSERT INTO balances (articulo_id, stock, stock_real, fecha_hora) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, balance.getArticuloId());
             stmt.setInt(2, balance.getStock());
             stmt.setInt(3, balance.getStockReal());
-            stmt.setTimestamp(4, balance.getFechaHora());
-            stmt.executeUpdate();
+            stmt.setTimestamp(4, Timestamp.valueOf(balance.getFechaHora()));
+
+            int rowsAfectadas = stmt.executeUpdate();
+
+            // Agrego ID generado al objeto
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    balance.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,11 +49,14 @@ public class BalancesDAOImpl implements BalancesDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Balances balance = new Balances();
+                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
+
                 balance.setId(rs.getInt("id"));
-                balance.setArticuloId(rs.getInt("articulo_id"));
+                balance.setArticulo(articulo);
                 balance.setStock(rs.getInt("stock"));
                 balance.setStockReal(rs.getInt("stock_real"));
                 balance.setFechaHora(rs.getTimestamp("fecha_hora"));
+
                 return Optional.of(balance);
             }
         } catch (SQLException e) {
@@ -57,8 +74,10 @@ public class BalancesDAOImpl implements BalancesDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Balances balance = new Balances();
+                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
+
                 balance.setId(rs.getInt("id"));
-                balance.setArticuloId(rs.getInt("articulo_id"));
+                balance.setArticulo(articulo);
                 balance.setStock(rs.getInt("stock"));
                 balance.setStockReal(rs.getInt("stock_real"));
                 balance.setFechaHora(rs.getTimestamp("fecha_hora"));
@@ -71,30 +90,33 @@ public class BalancesDAOImpl implements BalancesDAO {
     }
 
     @Override
-    public void actualizarBalance(Balances balance) {
+    public boolean actualizarBalance(BalancesRequest balance) {
         String sql = "UPDATE balances SET articulo_id = ?, stock = ?, stock_real = ?, fecha_hora = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, balance.getArticuloId());
             stmt.setInt(2, balance.getStock());
             stmt.setInt(3, balance.getStockReal());
-            stmt.setTimestamp(4, balance.getFechaHora());
+            stmt.setTimestamp(4, Timestamp.valueOf(balance.getFechaHora()));
             stmt.setInt(5, balance.getId());
-            stmt.executeUpdate();
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarBalancePorId(int id) {
+    public boolean eliminarBalancePorId(int id) {
         String sql = "DELETE FROM balances WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

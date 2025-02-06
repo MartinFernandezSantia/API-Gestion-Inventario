@@ -1,14 +1,16 @@
 package com.lmfm.api.dao;
 
 
+import com.lmfm.api.dto.ArticuloRequest;
 import com.lmfm.api.model.Articulo;
 import java.util.List;
 import java.util.Optional;
 
 public interface ArticuloDAO {
-    void insertarArticulo(Articulo articulo);
+    void insertarArticulo(ArticuloRequest articulo);
     Optional<Articulo> obtenerArticuloPorCodigo(int codigo);
+    Optional<Articulo> obtenerArticuloPorId(int id);
     List<Articulo> obtenerTodosLosArticulos();
-    void actualizarArticulo(Articulo articulo);
-    void eliminarArticuloPorId(int id);
+    boolean actualizarArticulo(ArticuloRequest articulo);
+    boolean eliminarArticuloPorId(int id);
 }

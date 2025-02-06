@@ -11,8 +11,7 @@ public class CreateDatabaseAndTables {
         String permisosTableSQL =
                 "CREATE TABLE IF NOT EXISTS permisos (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "nivel INT UNIQUE NOT NULL, " +
-                "descripcion VARCHAR(256))";
+                "nombre VARCHAR(256))";
         String usuariosTableSQL =
                 "CREATE TABLE IF NOT EXISTS usuarios (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
@@ -108,7 +107,20 @@ public class CreateDatabaseAndTables {
         }
     }
 
+    private static void dropDb() {
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            String dropSql = "DROP DATABASE IF EXISTS hpc_db;";
+            stmt.execute(dropSql);
+
+        } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    }
+
     public static void main(String[] args) {
+        dropDb();
         create();
     }
 }

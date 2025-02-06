@@ -19,7 +19,17 @@ public class TurnoDAOImpl implements TurnoDAO {
             stmt.setString(1, turno.getNombre());
             stmt.setTime(2, turno.getHoraInicio());
             stmt.setTime(3, turno.getHoraFin());
-            stmt.executeUpdate();
+            int rowsAfectadas = stmt.executeUpdate();
+
+            // Agrego ID generado al objeto
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    turno.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,7 +78,7 @@ public class TurnoDAOImpl implements TurnoDAO {
     }
 
     @Override
-    public void actualizarTurno(Turno turno) {
+    public boolean actualizarTurno(Turno turno) {
         String sql = "UPDATE turnos SET nombre = ?, hora_inicio = ?, hora_fin = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -76,21 +86,24 @@ public class TurnoDAOImpl implements TurnoDAO {
             stmt.setTime(2, turno.getHoraInicio());
             stmt.setTime(3, turno.getHoraFin());
             stmt.setInt(4, turno.getId());
-            stmt.executeUpdate();
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarTurnoPorId(int id) {
+    public boolean eliminarTurnoPorId(int id) {
         String sql = "DELETE FROM turnos WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

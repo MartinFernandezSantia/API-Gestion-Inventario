@@ -2,24 +2,24 @@ package com.lmfm.api.model;
 
 
 public class Sector {
-    private int id;
+    private Integer id;
     private String nombre;
 
     // Constructor por defecto
     public Sector() {}
 
     // Constructor con parámetros
-    public Sector(int id, String nombre) {
+    public Sector(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
 
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -1,0 +1,37 @@
+DAO: ✅
+1. Modificar metodos "actualizar" y "eliminar" para que retornen boolean
+2. Los metodos 'actualizar' e 'insertar' deben tomar una instancia del DTO por parametro en vez del Modelo
+
+DAOImpl ✅:
+1. En el 'try' de los metodos a modificar, retornar 'return stmt.executeUpdate() > 0;' y en el 'catch' 'return false' luego del print.
+2. En el metodo para insertar al final del 'try' sustituir el 'stmt.executeUpdate()' por :
+	int rowsAfectadas = stmt.executeUpdate();
+
+	// Agrego ID generado al objeto
+	if (rowsAfectadas > 0) {
+	ResultSet rs = stmt.getGeneratedKeys();
+
+	if (rs.next()) {
+	    int id = rs.getInt(1);
+	    articulo.setId(id);
+	}
+	}	
+	
+Y sustituir 'articulo.setId(id);' por el setId del modelo pertinente.
+
+DTO ✅:
+1. Todos los atributos 'id' deben ser de tipo Integer para poder comparar contra null.
+
+Servicio:
+1. Hacer que el 'private final' para el DAO sea private static y setee el DAO. Ej: 
+	- Antes:
+		private final ArticuloDAO articuloDAO;
+		
+	- Despues:
+		private static ArticuloDAO articuloDAO = new ArticuloDAOImpl();
+		
+2. Hacer que todos los metodos sean estaticos.
+
+3. Los metodos de 'insertar' y 'actualizar' toman por parametro un Modelo, lo transforman a DTO y se lo pasan al metodo pertinente del DAO.
+
+4. Los metodos 'actualizar' y 'eliminar' retornan el mismo boolean que retorna el DAO. El metodo 'insertar' retorna la comparacion del getId del DTO con null (ej. : return articuloRequest.getId() != null;), esto indica si la insercion en el DAO fue correcta.

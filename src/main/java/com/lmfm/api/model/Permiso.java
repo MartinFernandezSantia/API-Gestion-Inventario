@@ -1,41 +1,31 @@
 package com.lmfm.api.model;
 
 public class Permiso {
-    private int id;
-    private int nivel;
-    private String descripcion;
+    private Integer id;
+    private String nombre;
 
     // Constructor, getters y setters
 
     public Permiso() {}
 
-    public Permiso(int id, int nivel, String descripcion) {
+    public Permiso(Integer id, String nombre) {
         this.id = id;
-        this.nivel = nivel;
-        this.descripcion = descripcion;
+        this.nombre = nombre;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getNivel() {
-        return nivel;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

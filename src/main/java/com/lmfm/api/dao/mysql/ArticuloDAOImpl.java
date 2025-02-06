@@ -1,8 +1,11 @@
 package com.lmfm.api.dao.mysql;
 
 import com.lmfm.api.dao.ArticuloDAO;
+import com.lmfm.api.dto.ArticuloRequest;
 import com.lmfm.api.model.Articulo;
 import com.lmfm.api.bd.DatabaseConnection;
+import com.lmfm.api.model.Categoria;
+import com.lmfm.api.service.CategoriaServicio;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ import java.util.Optional;
 public class ArticuloDAOImpl implements ArticuloDAO {
 
     @Override
-    public void insertarArticulo(Articulo articulo) {
+    public void insertarArticulo(ArticuloRequest articulo) {
         String sql = "INSERT INTO articulos (codigo, nombre, stock, limite, categoria_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -21,7 +24,18 @@ public class ArticuloDAOImpl implements ArticuloDAO {
             stmt.setInt(3, articulo.getStock());
             stmt.setObject(4, articulo.getLimite(), Types.INTEGER);
             stmt.setInt(5, articulo.getCategoriaId());
-            stmt.executeUpdate();
+
+            int rowsAfectadas = stmt.executeUpdate();
+
+            // Agrego ID generado al objeto
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    articulo.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -34,15 +48,51 @@ public class ArticuloDAOImpl implements ArticuloDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, codigo);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 Articulo articulo = new Articulo();
+                Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
+                        rs.getInt("categoria_id")
+                );
+
                 articulo.setId(rs.getInt("id"));
                 articulo.setCodigo(rs.getInt("codigo"));
                 articulo.setNombre(rs.getString("nombre"));
                 articulo.setStock(rs.getInt("stock"));
                 articulo.setLimite(rs.getObject("limite", Integer.class));
                 articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
-                articulo.setCategoriaId(rs.getInt("categoria_id"));
+                articulo.setCategoria(categoria);
+
+                return Optional.of(articulo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Articulo> obtenerArticuloPorId(int id) {
+        String sql = "SELECT * FROM articulos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Articulo articulo = new Articulo();
+                Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
+                        rs.getInt("categoria_id")
+                );
+
+                articulo.setId(rs.getInt("id"));
+                articulo.setCodigo(rs.getInt("codigo"));
+                articulo.setNombre(rs.getString("nombre"));
+                articulo.setStock(rs.getInt("stock"));
+                articulo.setLimite(rs.getObject("limite", Integer.class));
+                articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
+                articulo.setCategoria(categoria);
+
                 return Optional.of(articulo);
             }
         } catch (SQLException e) {
@@ -60,13 +110,18 @@ public class ArticuloDAOImpl implements ArticuloDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Articulo articulo = new Articulo();
+                Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
+                        rs.getInt("categoria_id")
+                );
+
                 articulo.setId(rs.getInt("id"));
                 articulo.setCodigo(rs.getInt("codigo"));
                 articulo.setNombre(rs.getString("nombre"));
                 articulo.setStock(rs.getInt("stock"));
                 articulo.setLimite(rs.getObject("limite", Integer.class));
                 articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
-                articulo.setCategoriaId(rs.getInt("categoria_id"));
+                articulo.setCategoria(categoria);
+
                 articulos.add(articulo);
             }
         } catch (SQLException e) {
@@ -76,7 +131,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
     }
 
     @Override
-    public void actualizarArticulo(Articulo articulo) {
+    public boolean actualizarArticulo(ArticuloRequest articulo) {
         String sql = "UPDATE articulos SET nombre = ?, stock = ?, limite = ?, categoria_id = ? WHERE codigo = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -85,21 +140,25 @@ public class ArticuloDAOImpl implements ArticuloDAO {
             stmt.setObject(3, articulo.getLimite(), Types.INTEGER);
             stmt.setInt(4, articulo.getCategoriaId());
             stmt.setInt(5, articulo.getCodigo());
-            stmt.executeUpdate();
+
+            return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarArticuloPorId(int id) {
+    public boolean eliminarArticuloPorId(int id) {
         String sql = "DELETE FROM articulos WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

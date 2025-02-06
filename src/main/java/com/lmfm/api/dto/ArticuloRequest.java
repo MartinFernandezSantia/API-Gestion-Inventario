@@ -1,34 +1,28 @@
 package com.lmfm.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lmfm.api.model.Categoria;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-
-import java.sql.Timestamp;
 
 public class ArticuloRequest {
-    private int id;
-    private int codigo;
+    private Integer id;
+    private Integer codigo;
     @NotEmpty
     private String nombre;
-    @NotNull
     @Min(value = 0)
     private int stock;
     @Min(value = 0)
     private Integer limite;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String fechaHora;
+    @Min(value = 1)
+    private Integer categoriaId;
 
-    private int categoriaId;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

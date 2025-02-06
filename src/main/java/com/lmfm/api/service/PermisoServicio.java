@@ -10,46 +10,26 @@ import java.util.Optional;
 
 public class PermisoServicio {
 
-    private final PermisoDAO permisoDAO;
+    private static PermisoDAO permisoDAO = new PermisoDAOImpl();
 
-    public PermisoServicio() {
-        this.permisoDAO = new PermisoDAOImpl();
+    public static boolean crearPermiso(Permiso permiso) {
+        permisoDAO.insertarPermiso(permiso);
+        return permiso.getId() != null;
     }
 
-    public PermisoServicio(PermisoDAO permisoDAO) {
-        this.permisoDAO = permisoDAO;
-    }
-
-    // Crear nuevo permiso
-    public void crearPermiso(int nivel, String descripcion) {
-        Permiso nuevoPermiso = new Permiso();
-        nuevoPermiso.setNivel(nivel);
-        nuevoPermiso.setDescripcion(descripcion);
-        permisoDAO.insertarPermiso(nuevoPermiso);
-    }
-
-    // Listar permisos
-    public List<Permiso> obtenerTodosLosPermisos() {
+    public static List<Permiso> obtenerTodosLosPermisos() {
         return permisoDAO.obtenerTodosLosPermisos();
     }
 
-    // Actualizar permiso
-    public void actualizarPermiso(int nivel, String nuevaDescripcion) {
-        Optional<Permiso> permisoOpt = permisoDAO.obtenerPermisoPorNivel(nivel);
-        if (permisoOpt.isPresent()) {
-            Permiso permiso = permisoOpt.get();
-            permiso.setDescripcion(nuevaDescripcion);
-            permisoDAO.actualizarPermiso(permiso);
-        }
+    public static boolean actualizarPermiso(Permiso permiso) {
+        return permisoDAO.actualizarPermiso(permiso);
     }
 
-    // Eliminar permiso
-    public void eliminarPermiso(int id) {
-        permisoDAO.eliminarPermisoPorId(id);
+    public static boolean eliminarPermiso(int id) {
+         return permisoDAO.eliminarPermisoPorId(id);
     }
 
-    // Buscar permiso por nivel
-    public Permiso buscarPermisoPorNivel(int nivel) {
+    public static Permiso getPermisoPorNivel(int nivel) {
         Optional<Permiso> permisoOpt = permisoDAO.obtenerPermisoPorNivel(nivel);
         return permisoOpt.orElse(null); // Retorna null si no encuentra ningún permiso por nivel
     }

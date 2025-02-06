@@ -18,7 +18,17 @@ public class SectorDAOImpl implements SectorDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, sector.getNombre());
-            stmt.executeUpdate();
+            int rowsAfectadas = stmt.executeUpdate();
+
+            // Agrego ID generado al objeto
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    sector.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,27 +73,29 @@ public class SectorDAOImpl implements SectorDAO {
     }
 
     @Override
-    public void actualizarSector(Sector sector) {
+    public boolean actualizarSector(Sector sector) {
         String sql = "UPDATE sectores SET nombre = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, sector.getNombre());
             stmt.setInt(2, sector.getId());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarSectorPorId(int id) {
+    public boolean eliminarSectorPorId(int id) {
         String sql = "DELETE FROM sectores WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

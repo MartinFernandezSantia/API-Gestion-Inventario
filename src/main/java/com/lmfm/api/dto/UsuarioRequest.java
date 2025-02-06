@@ -7,20 +7,13 @@ import jakarta.validation.constraints.Positive;
 
 public class UsuarioRequest {
     private Integer id;
-
+    private String password;
     @NotEmpty
     private String nombre;
-
     @NotEmpty
     private String apellido;
-
-    @NotNull
     @Positive
     private int legajo;
-
-    private String password;
-
-    @NotNull
     @Positive
     private int permisoId;
 

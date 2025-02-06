@@ -1,31 +1,32 @@
 package com.lmfm.api.model;
 
 import java.util.Objects;
+import java.sql.Timestamp;
 
 public class MovimientosInventario {
-    private int id;
-    private int articuloId;
-    private int usuarioId;
-    private int turnoId;
-    private int subsectorId;
+    private Integer id;
+    private Articulo articulo;
+    private Usuario usuario;
+    private Turno turno;
+    private Subsector subsector;
     private int cantidad;
     private boolean tipoMovimiento; // true para entrada, false para salida
     private boolean esPedido;
     private boolean esDiferencia;
-    private java.sql.Timestamp fechaHora;
+    private Timestamp fechaHora;
 
     // Constructor por defecto
     public MovimientosInventario() {}
 
     // Constructor con parámetros
-    public MovimientosInventario(int id, int articuloId, int usuarioId, int turnoId, int subsectorId,
+    public MovimientosInventario(Integer id, Articulo articulo, Usuario usuario, Turno turno, Subsector subsector,
                                  int cantidad, boolean tipoMovimiento, boolean esPedido, boolean esDiferencia,
-                                 java.sql.Timestamp fechaHora) {
+                                 Timestamp fechaHora) {
         this.id = id;
-        this.articuloId = articuloId;
-        this.usuarioId = usuarioId;
-        this.turnoId = turnoId;
-        this.subsectorId = subsectorId;
+        this.articulo = articulo;
+        this.usuario = usuario;
+        this.turno = turno;
+        this.subsector = subsector;
         this.cantidad = cantidad;
         this.tipoMovimiento = tipoMovimiento;
         this.esPedido = esPedido;
@@ -34,44 +35,44 @@ public class MovimientosInventario {
     }
 
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getArticuloId() {
-        return articuloId;
+    public Articulo getArticulo() {
+        return articulo;
     }
 
-    public void setArticuloId(int articuloId) {
-        this.articuloId = articuloId;
+    public void setArticulo(Articulo articulo) {
+        this.articulo = articulo;
     }
 
-    public int getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarioId(int usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public int getTurnoId() {
-        return turnoId;
+    public Turno getTurno() {
+        return turno;
     }
 
-    public void setTurnoId(int turnoId) {
-        this.turnoId = turnoId;
+    public void setTurno(Turno turno) {
+        this.turno = turno;
     }
 
-    public int getSubsectorId() {
-        return subsectorId;
+    public Subsector getSubsector() {
+        return subsector;
     }
 
-    public void setSubsectorId(int subsectorId) {
-        this.subsectorId = subsectorId;
+    public void setSubsector(Subsector subsector) {
+        this.subsector = subsector;
     }
 
     public int getCantidad() {
@@ -106,11 +107,11 @@ public class MovimientosInventario {
         this.esDiferencia = esDiferencia;
     }
 
-    public java.sql.Timestamp getFechaHora() {
+    public Timestamp getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(java.sql.Timestamp fechaHora) {
+    public void setFechaHora(Timestamp fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -118,10 +119,10 @@ public class MovimientosInventario {
     public String toString() {
         return "MovimientosInventario{" +
                 "id=" + id +
-                ", articuloId=" + articuloId +
-                ", usuarioId=" + usuarioId +
-                ", turnoId=" + turnoId +
-                ", subsectorId=" + subsectorId +
+                ", articulo=" + articulo +
+                ", usuario=" + usuario +
+                ", turno=" + turno +
+                ", subsector=" + subsector +
                 ", cantidad=" + cantidad +
                 ", tipoMovimiento=" + tipoMovimiento +
                 ", esPedido=" + esPedido +
@@ -136,10 +137,10 @@ public class MovimientosInventario {
         if (o == null || getClass() != o.getClass()) return false;
         MovimientosInventario that = (MovimientosInventario) o;
         return id == that.id &&
-                articuloId == that.articuloId &&
-                usuarioId == that.usuarioId &&
-                turnoId == that.turnoId &&
-                subsectorId == that.subsectorId &&
+                articulo == that.articulo &&
+                usuario == that.usuario &&
+                turno == that.turno &&
+                subsector == that.subsector &&
                 cantidad == that.cantidad &&
                 tipoMovimiento == that.tipoMovimiento &&
                 esPedido == that.esPedido &&
@@ -149,6 +150,6 @@ public class MovimientosInventario {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, articuloId, usuarioId, turnoId, subsectorId, cantidad, tipoMovimiento, esPedido, esDiferencia, fechaHora);
+        return Objects.hash(id, articulo, usuario, turno, subsector, cantidad, tipoMovimiento, esPedido, esDiferencia, fechaHora);
     }
 }

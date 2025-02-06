@@ -9,6 +9,6 @@ public interface CategoriaDAO {
     void insertarCategoria(Categoria categoria);
     Optional<Categoria> obtenerCategoriaPorId(int id);
     List<Categoria> obtenerTodasLasCategorias();
-    void actualizarCategoria(Categoria categoria);
-    void eliminarCategoriaPorId(int id);
+    boolean actualizarCategoria(Categoria categoria);
+    boolean eliminarCategoriaPorId(int id);
 }

@@ -2,8 +2,13 @@ package com.lmfm.api.dao.mysql;
 
 
 import com.lmfm.api.dao.MovimientosInventarioDAO;
-import com.lmfm.api.model.MovimientosInventario;
+import com.lmfm.api.dto.MovimientosInventarioRequest;
+import com.lmfm.api.model.*;
 import com.lmfm.api.bd.DatabaseConnection;
+import com.lmfm.api.service.ArticuloServicio;
+import com.lmfm.api.service.SubsectorServicio;
+import com.lmfm.api.service.TurnoServicio;
+import com.lmfm.api.service.UsuarioServicio;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +18,7 @@ import java.util.Optional;
 public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
 
     @Override
-    public void insertarMovimiento(MovimientosInventario movimiento) {
+    public void insertarMovimiento(MovimientosInventarioRequest movimiento) {
         String sql = "INSERT INTO movimientos_inventario (articulo_id, usuario_id, turno_id, subsector_id, cantidad, tipo_movimiento, es_pedido, es_diferencia, fecha_hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -25,8 +30,19 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
             stmt.setBoolean(6, movimiento.isTipoMovimiento());
             stmt.setBoolean(7, movimiento.isEsPedido());
             stmt.setBoolean(8, movimiento.isEsDiferencia());
-            stmt.setTimestamp(9, movimiento.getFechaHora());
-            stmt.executeUpdate();
+            stmt.setTimestamp(9, Timestamp.valueOf(movimiento.getFechaHora()));
+
+            int rowsAfectadas = stmt.executeUpdate();
+
+            // Agrego ID generado al objeto
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    movimiento.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,11 +57,16 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 MovimientosInventario movimiento = new MovimientosInventario();
+                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
+                Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).get();
+                Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id"));
+                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id"));
+
                 movimiento.setId(rs.getInt("id"));
-                movimiento.setArticuloId(rs.getInt("articulo_id"));
-                movimiento.setUsuarioId(rs.getInt("usuario_id"));
-                movimiento.setTurnoId(rs.getInt("turno_id"));
-                movimiento.setSubsectorId(rs.getInt("subsector_id"));
+                movimiento.setArticulo(articulo);
+                movimiento.setUsuario(usuario);
+                movimiento.setTurno(turno);
+                movimiento.setSubsector(subsector);
                 movimiento.setCantidad(rs.getInt("cantidad"));
                 movimiento.setTipoMovimiento(rs.getBoolean("tipo_movimiento"));
                 movimiento.setEsPedido(rs.getBoolean("es_pedido"));
@@ -68,11 +89,16 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 MovimientosInventario movimiento = new MovimientosInventario();
+                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
+                Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).get();
+                Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id"));
+                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id"));
+
                 movimiento.setId(rs.getInt("id"));
-                movimiento.setArticuloId(rs.getInt("articulo_id"));
-                movimiento.setUsuarioId(rs.getInt("usuario_id"));
-                movimiento.setTurnoId(rs.getInt("turno_id"));
-                movimiento.setSubsectorId(rs.getInt("subsector_id"));
+                movimiento.setArticulo(articulo);
+                movimiento.setUsuario(usuario);
+                movimiento.setTurno(turno);
+                movimiento.setSubsector(subsector);
                 movimiento.setCantidad(rs.getInt("cantidad"));
                 movimiento.setTipoMovimiento(rs.getBoolean("tipo_movimiento"));
                 movimiento.setEsPedido(rs.getBoolean("es_pedido"));
@@ -87,7 +113,7 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
     }
 
     @Override
-    public void actualizarMovimiento(MovimientosInventario movimiento) {
+    public boolean actualizarMovimiento(MovimientosInventarioRequest movimiento) {
         String sql = "UPDATE movimientos_inventario SET articulo_id = ?, usuario_id = ?, turno_id = ?, subsector_id = ?, cantidad = ?, tipo_movimiento = ?, es_pedido = ?, es_diferencia = ?, fecha_hora = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -99,23 +125,25 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
             stmt.setBoolean(6, movimiento.isTipoMovimiento());
             stmt.setBoolean(7, movimiento.isEsPedido());
             stmt.setBoolean(8, movimiento.isEsDiferencia());
-            stmt.setTimestamp(9, movimiento.getFechaHora());
+            stmt.setTimestamp(9, Timestamp.valueOf(movimiento.getFechaHora()));
             stmt.setInt(10, movimiento.getId());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarMovimientoPorId(int id) {
+    public boolean eliminarMovimientoPorId(int id) {
         String sql = "DELETE FROM movimientos_inventario WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

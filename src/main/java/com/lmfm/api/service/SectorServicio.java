@@ -1,6 +1,7 @@
 package com.lmfm.api.service;
 
 import com.lmfm.api.dao.SectorDAO;
+import com.lmfm.api.dao.mysql.SectorDAOImpl;
 import com.lmfm.api.model.Sector;
 
 import java.util.List;
@@ -8,41 +9,27 @@ import java.util.Optional;
 
 public class SectorServicio {
 
-    private final SectorDAO sectorDAO;
+    private static SectorDAO sectorDAO = new SectorDAOImpl();
 
-    public SectorServicio(SectorDAO sectorDAO) {
-        this.sectorDAO = sectorDAO;
+    public static boolean crearSector(Sector sector) {
+        sectorDAO.insertarSector(sector);
+
+        return sector.getId() != null;
     }
 
-    // Crear nuevo sector
-    public void crearSector(String nombre) {
-        Sector nuevoSector = new Sector();
-        nuevoSector.setNombre(nombre);
-        sectorDAO.insertarSector(nuevoSector);
-    }
-
-    // Listar sectores
-    public List<Sector> obtenerTodosLosSectores() {
+    public static List<Sector> obtenerTodosLosSectores() {
         return sectorDAO.obtenerTodosLosSectores();
     }
 
-    // Actualizar sector
-    public void actualizarSector(int id, String nuevoNombre) {
-        Optional<Sector> sectorOpt = sectorDAO.obtenerSectorPorId(id);
-        if (sectorOpt.isPresent()) {
-            Sector sector = sectorOpt.get();
-            sector.setNombre(nuevoNombre);
-            sectorDAO.actualizarSector(sector);
-        }
+    public static boolean actualizarSector(Sector sector) {
+        return sectorDAO.actualizarSector(sector);
     }
 
-    // Eliminar sector
-    public void eliminarSector(int id) {
-        sectorDAO.eliminarSectorPorId(id);
+    public static boolean eliminarSector(int id) {
+         return sectorDAO.eliminarSectorPorId(id);
     }
 
-    // Buscar sector por ID
-    public Sector buscarSectorPorId(int id) {
+    public static Sector getSectorPorId(int id) {
         Optional<Sector> sectorOpt = sectorDAO.obtenerSectorPorId(id);
         return sectorOpt.orElse(null); // Retorna null si no encuentra ningún sector por ID
     }

@@ -1,41 +1,42 @@
 package com.lmfm.api.model;
 
 import java.util.Objects;
+import java.sql.Timestamp;
 
 public class Balances {
-    private int id;
-    private int articuloId;
+    private Integer id;
+    private Articulo articulo;
     private int stock;
     private int stockReal;
-    private java.sql.Timestamp fechaHora;
+    private Timestamp fechaHora;
 
     // Constructor por defecto
     public Balances() {}
 
     // Constructor con parámetros
-    public Balances(int id, int articuloId, int stock, int stockReal, java.sql.Timestamp fechaHora) {
+    public Balances(Integer id, Articulo articulo, int stock, int stockReal, Timestamp fechaHora) {
         this.id = id;
-        this.articuloId = articuloId;
+        this.articulo = articulo;
         this.stock = stock;
         this.stockReal = stockReal;
         this.fechaHora = fechaHora;
     }
 
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getArticuloId() {
-        return articuloId;
+    public Articulo getArticulo() {
+        return articulo;
     }
 
-    public void setArticuloId(int articuloId) {
-        this.articuloId = articuloId;
+    public void setArticulo(Articulo articulo) {
+        this.articulo = articulo;
     }
 
     public int getStock() {
@@ -54,11 +55,11 @@ public class Balances {
         this.stockReal = stockReal;
     }
 
-    public java.sql.Timestamp getFechaHora() {
+    public Timestamp getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(java.sql.Timestamp fechaHora) {
+    public void setFechaHora(Timestamp fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -66,7 +67,7 @@ public class Balances {
     public String toString() {
         return "Balances{" +
                 "id=" + id +
-                ", articuloId=" + articuloId +
+                ", articulo=" + articulo +
                 ", stock=" + stock +
                 ", stockReal=" + stockReal +
                 ", fechaHora=" + fechaHora +
@@ -79,7 +80,7 @@ public class Balances {
         if (o == null || getClass() != o.getClass()) return false;
         Balances that = (Balances) o;
         return id == that.id &&
-                articuloId == that.articuloId &&
+                articulo == that.articulo &&
                 stock == that.stock &&
                 stockReal == that.stockReal &&
                 Objects.equals(fechaHora, that.fechaHora);
@@ -87,6 +88,6 @@ public class Balances {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, articuloId, stock, stockReal, fechaHora);
+        return Objects.hash(id, articulo, stock, stockReal, fechaHora);
     }
 }

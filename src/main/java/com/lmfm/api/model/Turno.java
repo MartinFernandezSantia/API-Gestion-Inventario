@@ -5,7 +5,7 @@ import java.sql.Time;
 import java.util.Objects;
 
 public class Turno {
-    private int id;
+    private Integer id;
     private String nombre;
     private Time horaInicio;
     private Time horaFin;
@@ -14,7 +14,7 @@ public class Turno {
     public Turno() {}
 
     // Constructor con parámetros
-    public Turno(int id, String nombre, Time horaInicio, Time horaFin) {
+    public Turno(Integer id, String nombre, Time horaInicio, Time horaFin) {
         this.id = id;
         this.nombre = nombre;
         this.horaInicio = horaInicio;
@@ -22,11 +22,11 @@ public class Turno {
     }
 
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

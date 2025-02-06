@@ -17,7 +17,17 @@ public class CategoriaDAOImpl implements CategoriaDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, categoria.getNombre());
-            stmt.executeUpdate();
+            int rowsAfectadas = stmt.executeUpdate();
+
+            // Agrego ID generado al objeto
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    categoria.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,27 +72,29 @@ public class CategoriaDAOImpl implements CategoriaDAO {
     }
 
     @Override
-    public void actualizarCategoria(Categoria categoria) {
+    public boolean actualizarCategoria(Categoria categoria) {
         String sql = "UPDATE categorias SET nombre = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, categoria.getNombre());
             stmt.setInt(2, categoria.getId());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void eliminarCategoriaPorId(int id) {
+    public boolean eliminarCategoriaPorId(int id) {
         String sql = "DELETE FROM categorias WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

@@ -1,26 +1,26 @@
 package com.lmfm.api.model;
 
 public class Subsector {
-    private int id;
+    private Integer id;
     private String nombre;
-    private int sectorId;
+    private Sector sector;
 
     // Constructor por defecto
     public Subsector() {}
 
     // Constructor con parámetros
-    public Subsector(int id, String nombre, int sectorId) {
+    public Subsector(Integer id, String nombre, Sector sector) {
         this.id = id;
         this.nombre = nombre;
-        this.sectorId = sectorId;
+        this.sector = sector;
     }
 
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -32,16 +32,16 @@ public class Subsector {
         this.nombre = nombre;
     }
 
-    public int getSectorId() {
-        return sectorId;
+    public Sector getSector() {
+        return sector;
     }
 
-    public void setSectorId(int sectorId) {
-        this.sectorId = sectorId;
+    public void setSector(Sector sector) {
+        this.sector = sector;
     }
 
     @Override
     public String toString() {
-        return "Subsector{id=" + id + ", nombre='" + nombre + "', sectorId=" + sectorId + "}";
+        return "Subsector{id=" + id + ", nombre='" + nombre + "', sector=" + sector + "}";
     }
 }

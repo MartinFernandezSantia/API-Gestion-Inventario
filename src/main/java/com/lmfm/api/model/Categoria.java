@@ -1,24 +1,24 @@
 package com.lmfm.api.model;
 
 public class Categoria {
-    private int id;
+    private Integer id;
     private String nombre;
 
     // Constructor por defecto
     public Categoria() {}
 
     // Constructor con parámetros
-    public Categoria(int id, String nombre) {
+    public Categoria(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
 
     // Getters y Setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

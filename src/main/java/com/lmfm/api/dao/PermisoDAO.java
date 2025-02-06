@@ -9,6 +9,6 @@ public interface PermisoDAO {
     void insertarPermiso(Permiso permiso);
     Optional<Permiso> obtenerPermisoPorNivel(int nivel);
     List<Permiso> obtenerTodosLosPermisos();
-    void actualizarPermiso(Permiso permiso);
-    void eliminarPermisoPorId(int id);
+    boolean actualizarPermiso(Permiso permiso);
+    boolean eliminarPermisoPorId(int id);
 }

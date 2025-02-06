@@ -16,15 +16,16 @@ Posible solucion:
     5. Al iniciar sesion por primera vez, se fuerza el cambio de contraseña
 
 14. Charla con Santini:
-1. Controlador(comprobaciones de los datos) recibe DTO convierte a modelo
-2. Servicio (regex contraseña no interacción con BD) recibe modelo envia DTO
-3. Interfaz DAO -> Implementación de ModeloDAOImpl. Entra DTO y se modifica, no sale nada
-4. Servicio convierto DTO a Modelo -> !! Modifique esta ultima parte para que retorne un booleano
+    1. Controlador(comprobaciones de los datos) recibe DTO convierte a modelo
+    2. Servicio (regex contraseña no interacción con BD) recibe modelo envia DTO
+    3. Interfaz DAO -> Implementación de ModeloDAOImpl. Entra DTO y se modifica, no sale nada
+    4. Servicio convierto DTO a Modelo -> !! Modifique esta ultima parte para que retorne un booleano
 
 15. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
-
-16. Debatir sobre cuan relevante es el nivel de permiso o si habria que remover dicha columna ✅ (Eliminar nivel)
 
 17. Almacenar refreshTokens en BD para poder revocarlos si es necesario ⏰
 
 18. Cambiar tiempo de access token ⏰
+
+19. Modificar todo el sistema para que trabaje con exepciones y no con boleanos.
+20. Mejorar consultas SQL para traer todos los elementos con Joins en vez de usar los Servicios en los 'gets'
