@@ -15,7 +15,7 @@ public class ArticuloRequest {
     private Integer limite;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String fechaHora;
-    @Min(value = 1)
+    //@Min(value = 1)
     private Integer categoriaId;
 
     public Integer getId() {
@@ -66,11 +66,11 @@ public class ArticuloRequest {
         this.fechaHora = fechaHora;
     }
 
-    public int getCategoriaId() {
+    public Integer getCategoriaId() {
         return categoriaId;
     }
 
-    public void setCategoriaId(int categoriaId) {
+    public void setCategoriaId(Integer categoriaId) {
         this.categoriaId = categoriaId;
     }
 }

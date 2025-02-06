@@ -18,12 +18,17 @@ public class ArticuloDAOImpl implements ArticuloDAO {
     public void insertarArticulo(ArticuloRequest articulo) {
         String sql = "INSERT INTO articulos (codigo, nombre, stock, limite, categoria_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, articulo.getCodigo());
             stmt.setString(2, articulo.getNombre());
             stmt.setInt(3, articulo.getStock());
             stmt.setObject(4, articulo.getLimite(), Types.INTEGER);
-            stmt.setInt(5, articulo.getCategoriaId());
+            if (articulo.getCategoriaId() == null) {
+                stmt.setNull(5, Types.INTEGER);
+            } else {
+                stmt.setInt(5, articulo.getCategoriaId());
+            }
+
 
             int rowsAfectadas = stmt.executeUpdate();
 

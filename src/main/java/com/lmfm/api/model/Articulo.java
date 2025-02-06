@@ -25,7 +25,7 @@ public class Articulo {
         this.categoria = categoria;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
