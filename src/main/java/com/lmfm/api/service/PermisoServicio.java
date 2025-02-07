@@ -33,4 +33,8 @@ public class PermisoServicio {
         Optional<Permiso> permisoOpt = permisoDAO.obtenerPermisoPorNivel(nivel);
         return permisoOpt.orElse(null); // Retorna null si no encuentra ningún permiso por nivel
     }
+
+    public static Optional<Permiso> getPermisoPorId(int id) {
+        return permisoDAO.obtenerPermisoPorId(id);
+    }
 }

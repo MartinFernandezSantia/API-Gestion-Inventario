@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface PermisoDAO {
     void insertarPermiso(Permiso permiso);
     Optional<Permiso> obtenerPermisoPorNivel(int nivel);
+    Optional<Permiso> obtenerPermisoPorId(int id);
     List<Permiso> obtenerTodosLosPermisos();
     boolean actualizarPermiso(Permiso permiso);
     boolean eliminarPermisoPorId(int id);

@@ -4,6 +4,7 @@ import com.lmfm.api.dao.mysql.PermisoDAOImpl;
 import com.lmfm.api.dto.UsuarioRequest;
 import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
+import com.lmfm.api.service.PermisoServicio;
 import com.lmfm.api.service.UsuarioServicio;
 import com.lmfm.api.translators.UsuarioTranslator;
 import jakarta.validation.Valid;
@@ -21,9 +22,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> crearUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
-        // !! Cambiar esta linea cuando se implemente PermisoServicio!!
-        PermisoDAOImpl permisoDAO = new PermisoDAOImpl();
-        Optional<Permiso> permiso = permisoDAO.obtenerPermisoPorId(usuarioRequest.getPermisoId());
+        Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(usuarioRequest.getPermisoId());
 
         if (permiso.isEmpty()) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
@@ -92,9 +91,7 @@ public class UsuarioController {
 
     @PutMapping()
     public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioRequest usuarioRequest) {
-        // !! Cambiar esta linea cuando se implemente PermisoServicio!!
-        PermisoDAOImpl permisoDAO = new PermisoDAOImpl();
-        Optional<Permiso> permiso = permisoDAO.obtenerPermisoPorId(usuarioRequest.getPermisoId());
+        Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(usuarioRequest.getPermisoId());
 
         if (permiso.isEmpty()) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");

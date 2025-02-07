@@ -41,8 +41,7 @@ public class CategoriaServicio {
     }
 
     // Buscar categoría por ID
-    public static Categoria buscarCategoriaPorId(int id) {
-        Optional<Categoria> categoriaOpt = categoriaDAO.obtenerCategoriaPorId(id);
-        return categoriaOpt.orElse(null); // Retorna null si no encuentra ninguna categoría por ID
+    public static Optional<Categoria> buscarCategoriaPorId(int id) {
+        return categoriaDAO.obtenerCategoriaPorId(id);
     }
 }

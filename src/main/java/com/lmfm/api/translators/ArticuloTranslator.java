@@ -32,9 +32,8 @@ public class ArticuloTranslator {
         articuloRequest.setNombre(articulo.getNombre());
         articuloRequest.setStock(articulo.getStock());
         articuloRequest.setLimite(articulo.getLimite());
-      //  articuloRequest.setCategoriaId(articulo.getCategoria().getId());
         articuloRequest.setFechaHora(articulo.getFechaHora().toString());
-        articuloRequest.setCategoriaId(null);
+        articuloRequest.setCategoriaId(articulo.getCategoria() == null ? null : articulo.getCategoria().getId());
 
         return articuloRequest;
     }

@@ -23,11 +23,12 @@ public class ArticuloDAOImpl implements ArticuloDAO {
             stmt.setString(2, articulo.getNombre());
             stmt.setInt(3, articulo.getStock());
             stmt.setObject(4, articulo.getLimite(), Types.INTEGER);
-            if (articulo.getCategoriaId() == null) {
-                stmt.setNull(5, Types.INTEGER);
-            } else {
-                stmt.setInt(5, articulo.getCategoriaId());
-            }
+            stmt.setObject(5, articulo.getCategoriaId(), Types.INTEGER);
+//            if (articulo.getCategoriaId() == null) {
+//                stmt.setNull(5, Types.INTEGER);
+//            } else {
+//                stmt.setInt(5, articulo.getCategoriaId());
+//            }
 
 
             int rowsAfectadas = stmt.executeUpdate();
@@ -58,7 +59,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
                 Articulo articulo = new Articulo();
                 Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
                         rs.getInt("categoria_id")
-                );
+                ).orElse(null);
 
                 articulo.setId(rs.getInt("id"));
                 articulo.setCodigo(rs.getInt("codigo"));
@@ -88,7 +89,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
                 Articulo articulo = new Articulo();
                 Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
                         rs.getInt("categoria_id")
-                );
+                ).orElse(null);
 
                 articulo.setId(rs.getInt("id"));
                 articulo.setCodigo(rs.getInt("codigo"));
@@ -117,7 +118,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
                 Articulo articulo = new Articulo();
                 Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
                         rs.getInt("categoria_id")
-                );
+                ).orElse(null);
 
                 articulo.setId(rs.getInt("id"));
                 articulo.setCodigo(rs.getInt("codigo"));

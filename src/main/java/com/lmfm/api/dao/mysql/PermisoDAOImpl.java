@@ -42,6 +42,7 @@ public class PermisoDAOImpl implements PermisoDAO {
         return Optional.empty();
     }
 
+    @Override
     public Optional<Permiso> obtenerPermisoPorId(int id) {
         String sql = "SELECT * FROM permisos WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();

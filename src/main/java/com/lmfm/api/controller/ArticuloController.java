@@ -22,16 +22,15 @@ public class ArticuloController {
 
     @PostMapping
     public ResponseEntity<?> crearArticulo(@RequestBody @Valid ArticuloRequest articuloRequest) {
+        Categoria categoria = Optional.ofNullable(articuloRequest.getCategoriaId())
+                .flatMap(CategoriaServicio::buscarCategoriaPorId)
+                .orElse(null);
 
-        CategoriaServicio categoriaServicio = new CategoriaServicio();
-
-       /* Categoria categoria = categoriaServicio.buscarCategoriaPorId(articuloRequest.getCategoriaId());
-
-        if(categoria == null) {
+        if(articuloRequest.getCategoriaId() != null && categoria == null) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
-        }*/
+        }
 
-        Articulo nuevoArticulo = ArticuloTranslator.fromDTO(articuloRequest, null);
+        Articulo nuevoArticulo = ArticuloTranslator.fromDTO(articuloRequest, categoria);
 
         if(!ArticuloServicio.crearArticulo(nuevoArticulo)) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
