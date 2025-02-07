@@ -90,7 +90,7 @@ public class UsuarioController {
     }
 
     @PutMapping()
-    public ResponseEntity<?> actualizarUsuario(@RequestBody UsuarioRequest usuarioRequest) {
+    public ResponseEntity<?> actualizarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(usuarioRequest.getPermisoId());
 
         if (permiso.isEmpty()) {

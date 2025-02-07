@@ -10,38 +10,30 @@ import java.util.Optional;
 public class CategoriaServicio {
 
     private static CategoriaDAO categoriaDAO = new CategoriaDAOImpl();
-
-    public CategoriaServicio() {}
-
+    
     // Crear nueva categoría
-    public static void crearCategoria(String nombre) {
-        Categoria nuevaCategoria = new Categoria();
-        nuevaCategoria.setNombre(nombre);
-        categoriaDAO.insertarCategoria(nuevaCategoria);
+    public static boolean crearCategoria(Categoria categoria) {
+        categoriaDAO.insertarCategoria(categoria);
+        return categoria.getId() != null;
     }
 
     // Listar categorías
-    public static List<Categoria> obtenerTodasLasCategorias() {
+    public static List<Categoria> getCategorias() {
         return categoriaDAO.obtenerTodasLasCategorias();
     }
 
     // Actualizar categoría
-    public static void actualizarCategoria(int id, String nuevoNombre) {
-        Optional<Categoria> categoriaOpt = categoriaDAO.obtenerCategoriaPorId(id);
-        if (categoriaOpt.isPresent()) {
-            Categoria categoria = categoriaOpt.get();
-            categoria.setNombre(nuevoNombre);
-            categoriaDAO.actualizarCategoria(categoria);
-        }
+    public static boolean actualizarCategoria(Categoria categoria) {
+        return categoriaDAO.actualizarCategoria(categoria);
     }
 
     // Eliminar categoría
-    public static void eliminarCategoria(int id) {
-        categoriaDAO.eliminarCategoriaPorId(id);
+    public static boolean eliminarCategoria(int id) {
+        return categoriaDAO.eliminarCategoriaPorId(id);
     }
 
     // Buscar categoría por ID
-    public static Optional<Categoria> buscarCategoriaPorId(int id) {
+    public static Optional<Categoria> getCategoriaPorId(int id) {
         return categoriaDAO.obtenerCategoriaPorId(id);
     }
 }

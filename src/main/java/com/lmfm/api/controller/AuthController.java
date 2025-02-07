@@ -7,6 +7,7 @@ import com.lmfm.api.dto.LoginRequest;
 import com.lmfm.api.model.Usuario;
 import com.lmfm.api.service.AuthServicio;
 import com.lmfm.api.service.UsuarioServicio;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import java.util.Optional;
 public class AuthController {
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         Map<String, String> tokens = AuthServicio.login(loginRequest);
 
         if (tokens != null) {

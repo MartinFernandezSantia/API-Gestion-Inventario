@@ -16,7 +16,7 @@ public class SectorDAOImpl implements SectorDAO {
     public void insertarSector(Sector sector) {
         String sql = "INSERT INTO sectores (nombre) VALUES (?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, sector.getNombre());
             int rowsAfectadas = stmt.executeUpdate();
 

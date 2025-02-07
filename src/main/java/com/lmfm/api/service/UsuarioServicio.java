@@ -30,6 +30,7 @@ public class UsuarioServicio {
         // Creo al usuario
         UsuarioRequest usuarioRequest = UsuarioTranslator.toDTO(usuario);
         usuarioDAO.insertarUsuario(usuarioRequest);
+        usuario.setId(usuarioRequest.getId());
 
         // Si el usuario fue creado correctamente id != null
         return usuarioRequest.getId() != null;

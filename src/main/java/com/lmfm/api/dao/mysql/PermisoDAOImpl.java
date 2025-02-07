@@ -15,7 +15,7 @@ public class PermisoDAOImpl implements PermisoDAO {
     public void insertarPermiso(Permiso permiso) {
         String sql = "INSERT INTO permisos (nivel, descripcion) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(2, permiso.getNombre());
             stmt.executeUpdate();
         } catch (SQLException e) {

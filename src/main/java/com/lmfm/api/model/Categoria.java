@@ -1,7 +1,10 @@
 package com.lmfm.api.model;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class Categoria {
     private Integer id;
+    @NotEmpty
     private String nombre;
 
     // Constructor por defecto

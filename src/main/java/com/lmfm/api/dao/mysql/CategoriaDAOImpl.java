@@ -15,7 +15,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
     public void insertarCategoria(Categoria categoria) {
         String sql = "INSERT INTO categorias (nombre) VALUES (?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, categoria.getNombre());
             int rowsAfectadas = stmt.executeUpdate();
 

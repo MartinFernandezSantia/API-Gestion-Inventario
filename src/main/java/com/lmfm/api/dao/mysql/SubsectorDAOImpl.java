@@ -18,7 +18,7 @@ public class SubsectorDAOImpl implements SubsectorDAO {
     public void insertarSubsector(SubsectorRequest subsector) {
         String sql = "INSERT INTO subsectores (nombre, sector_id) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, subsector.getNombre());
             stmt.setInt(2, subsector.getSectorId());
             int rowsAfectadas = stmt.executeUpdate();

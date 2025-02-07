@@ -17,6 +17,7 @@ public class ArticuloServicio {
         ArticuloRequest articuloRequest = ArticuloTranslator.toDTO(articulo);
 
         articuloDAO.insertarArticulo(articuloRequest);
+        articulo.setId(articuloRequest.getId());
 
         return articuloRequest.getId() != null;
     }

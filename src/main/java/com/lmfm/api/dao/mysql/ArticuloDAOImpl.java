@@ -24,11 +24,6 @@ public class ArticuloDAOImpl implements ArticuloDAO {
             stmt.setInt(3, articulo.getStock());
             stmt.setObject(4, articulo.getLimite(), Types.INTEGER);
             stmt.setObject(5, articulo.getCategoriaId(), Types.INTEGER);
-//            if (articulo.getCategoriaId() == null) {
-//                stmt.setNull(5, Types.INTEGER);
-//            } else {
-//                stmt.setInt(5, articulo.getCategoriaId());
-//            }
 
 
             int rowsAfectadas = stmt.executeUpdate();
@@ -57,7 +52,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
 
             if (rs.next()) {
                 Articulo articulo = new Articulo();
-                Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
+                Categoria categoria = CategoriaServicio.getCategoriaPorId(
                         rs.getInt("categoria_id")
                 ).orElse(null);
 
@@ -87,7 +82,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
 
             if (rs.next()) {
                 Articulo articulo = new Articulo();
-                Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
+                Categoria categoria = CategoriaServicio.getCategoriaPorId(
                         rs.getInt("categoria_id")
                 ).orElse(null);
 
@@ -116,7 +111,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Articulo articulo = new Articulo();
-                Categoria categoria = CategoriaServicio.buscarCategoriaPorId(
+                Categoria categoria = CategoriaServicio.getCategoriaPorId(
                         rs.getInt("categoria_id")
                 ).orElse(null);
 

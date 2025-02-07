@@ -21,7 +21,7 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
     public void insertarMovimiento(MovimientosInventarioRequest movimiento) {
         String sql = "INSERT INTO movimientos_inventario (articulo_id, usuario_id, turno_id, subsector_id, cantidad, tipo_movimiento, es_pedido, es_diferencia, fecha_hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, movimiento.getArticuloId());
             stmt.setInt(2, movimiento.getUsuarioId());
             stmt.setInt(3, movimiento.getTurnoId());

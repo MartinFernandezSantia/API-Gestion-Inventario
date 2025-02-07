@@ -15,7 +15,7 @@ public class TurnoDAOImpl implements TurnoDAO {
     public void insertarTurno(Turno turno) {
         String sql = "INSERT INTO turnos (nombre, hora_inicio, hora_fin) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, turno.getNombre());
             stmt.setTime(2, turno.getHoraInicio());
             stmt.setTime(3, turno.getHoraFin());

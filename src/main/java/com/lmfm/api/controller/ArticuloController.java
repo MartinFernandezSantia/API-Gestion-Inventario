@@ -23,7 +23,7 @@ public class ArticuloController {
     @PostMapping
     public ResponseEntity<?> crearArticulo(@RequestBody @Valid ArticuloRequest articuloRequest) {
         Categoria categoria = Optional.ofNullable(articuloRequest.getCategoriaId())
-                .flatMap(CategoriaServicio::buscarCategoriaPorId)
+                .flatMap(CategoriaServicio::getCategoriaPorId)
                 .orElse(null);
 
         if(articuloRequest.getCategoriaId() != null && categoria == null) {
@@ -82,7 +82,7 @@ public class ArticuloController {
         return ResponseEntity.ok().build();
     }
     @PutMapping
-    public ResponseEntity<?> actualizarArticulo(@RequestBody ArticuloRequest articuloRequest) {
+    public ResponseEntity<?> actualizarArticulo(@RequestBody @Valid ArticuloRequest articuloRequest) {
         CategoriaDAOImpl categoriaDAO = new CategoriaDAOImpl();
         Optional<Categoria> categoria = categoriaDAO.obtenerCategoriaPorId(articuloRequest.getCategoriaId());
 

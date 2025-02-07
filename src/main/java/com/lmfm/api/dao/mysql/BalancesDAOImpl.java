@@ -18,7 +18,7 @@ public class BalancesDAOImpl implements BalancesDAO {
     public void insertarBalance(BalancesRequest balance) {
         String sql = "INSERT INTO balances (articulo_id, stock, stock_real, fecha_hora) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, balance.getArticuloId());
             stmt.setInt(2, balance.getStock());
             stmt.setInt(3, balance.getStockReal());
