@@ -39,9 +39,8 @@ public class SubsectorServicio {
         return subsectorDAO.eliminarSubsectorPorId(id);
     }
 
-    // Buscar subsector por ID
-    public static Subsector getSubsectorPorId(int id) {
-        Optional<Subsector> subsectorOpt = subsectorDAO.obtenerSubsectorPorId(id);
-        return subsectorOpt.orElse(null); // Retorna null si no encuentra ningún subsector por ID
+    // Buscar subsector por ID !!CHEKEAR 2 RELATED PROBLEMS -> LO PASÉ A OPTIONAL PARA EL CONTROLADOR
+    public static Optional<Subsector> getSubsectorPorId(int id) {
+         return subsectorDAO.obtenerSubsectorPorId(id);
     }
 }

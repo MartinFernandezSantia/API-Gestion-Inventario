@@ -60,7 +60,7 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
                 Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
                 Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).get();
                 Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id"));
-                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id"));
+                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id")).get();
 
                 movimiento.setId(rs.getInt("id"));
                 movimiento.setArticulo(articulo);
@@ -92,7 +92,7 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
                 Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
                 Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).get();
                 Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id"));
-                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id"));
+                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id")).get();
 
                 movimiento.setId(rs.getInt("id"));
                 movimiento.setArticulo(articulo);
