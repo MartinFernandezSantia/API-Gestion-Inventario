@@ -29,8 +29,7 @@ public class SectorServicio {
          return sectorDAO.eliminarSectorPorId(id);
     }
 
-    public static Sector getSectorPorId(int id) {
-        Optional<Sector> sectorOpt = sectorDAO.obtenerSectorPorId(id);
-        return sectorOpt.orElse(null); // Retorna null si no encuentra ningún sector por ID
+    public static Optional<Sector> getSectorPorId(int id) {
+         return sectorDAO.obtenerSectorPorId(id);
     }
 }
