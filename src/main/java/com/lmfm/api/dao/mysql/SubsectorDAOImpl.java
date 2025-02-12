@@ -46,7 +46,7 @@ public class SubsectorDAOImpl implements SubsectorDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Subsector subsector = new Subsector();
-                Sector sector = SectorServicio.getSectorPorId(rs.getInt("sector_id")).get();
+                Sector sector = SectorServicio.getSectorPorId(rs.getInt("sector_id")).orElse(null);
 
                 subsector.setId(rs.getInt("id"));
                 subsector.setNombre(rs.getString("nombre"));

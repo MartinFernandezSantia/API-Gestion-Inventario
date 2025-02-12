@@ -16,6 +16,7 @@ public class MovimientosInventarioServicio {
     public static boolean crearMovimiento(MovimientosInventario movimientosInventario) {
         MovimientosInventarioRequest request = MovimientosInventarioTranslator.toDTO(movimientosInventario);
         movimientosInventarioDAO.insertarMovimiento(request);
+        movimientosInventario.setId(request.getId());
 
         return request.getId() != null;
     }
@@ -33,8 +34,7 @@ public class MovimientosInventarioServicio {
         return movimientosInventarioDAO.eliminarMovimientoPorId(id);
     }
 
-    public static MovimientosInventario getMovimientoPorId(int id) {
-        Optional<MovimientosInventario> movimientoOpt = movimientosInventarioDAO.obtenerMovimientoPorId(id);
-        return movimientoOpt.orElse(null); // Retorna null si no encuentra ningún movimiento por ID
+    public static Optional<MovimientosInventario> getMovimientoPorId(int id) {
+        return movimientosInventarioDAO.obtenerMovimientoPorId(id);
     }
 }

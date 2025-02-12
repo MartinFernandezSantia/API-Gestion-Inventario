@@ -57,10 +57,10 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 MovimientosInventario movimiento = new MovimientosInventario();
-                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
-                Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).get();
-                Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id")).get();
-                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id"));
+                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).orElse(null);
+                Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).orElse(null);
+                Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id")).orElse(null);
+                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id")).orElse(null);
 
                 movimiento.setId(rs.getInt("id"));
                 movimiento.setArticulo(articulo);
@@ -89,10 +89,10 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 MovimientosInventario movimiento = new MovimientosInventario();
-                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).get();
-                Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).get();
-                Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id")).get();
-                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id"));
+                Articulo articulo = ArticuloServicio.getArticuloPorId(rs.getInt("articulo_id")).orElse(null);
+                Usuario usuario = UsuarioServicio.getUsuarioPorId(rs.getInt("usuario_id")).orElse(null);
+                Turno turno = TurnoServicio.getTurnoPorId(rs.getInt("turno_id")).orElse(null);
+                Subsector subsector = SubsectorServicio.getSubsectorPorId(rs.getInt("subsector_id")).orElse(null);
 
                 movimiento.setId(rs.getInt("id"));
                 movimiento.setArticulo(articulo);

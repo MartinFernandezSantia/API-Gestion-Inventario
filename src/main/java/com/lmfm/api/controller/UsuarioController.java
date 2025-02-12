@@ -1,6 +1,6 @@
 package com.lmfm.api.controller;
 
-import com.lmfm.api.dao.mysql.PermisoDAOImpl;
+
 import com.lmfm.api.dto.UsuarioRequest;
 import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-// 127.0.0.1/usuarios
+
 @RestController
 @RequestMapping("usuarios")
 public class UsuarioController {
