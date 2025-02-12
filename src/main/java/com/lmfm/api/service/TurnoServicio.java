@@ -31,8 +31,7 @@ public class TurnoServicio {
         return turnoDAO.eliminarTurnoPorId(id);
     }
 
-    public static Turno getTurnoPorId(int id) {
-        Optional<Turno> turnoOpt = turnoDAO.obtenerTurnoPorId(id);
-        return turnoOpt.orElse(null); // Retorna null si no encuentra ningún turno por ID
+    public static Optional<Turno> getTurnoPorId(int id) {
+        return turnoDAO.obtenerTurnoPorId(id);
     }
 }

@@ -1,9 +1,9 @@
-2. Crear middleware
+1. Crear middleware para verificar JWT antes de que se acceda a cualquier endpoint menos el de login
 
-8. ¿Deberiamos permitir que la contraseña de los usuarios sea actualizada en el mismo formulario
+2. ¿Deberiamos permitir que la contraseña de los usuarios sea actualizada en el mismo formulario
 para actualizar el resto de los datos, o en uno separado? UX vs Seguridad
 
-13. Como gestionamos la seguridad de las contraseñas de los usuarios comunes y corrientes?
+3. Como gestionamos la seguridad de las contraseñas de los usuarios comunes y corrientes?
 - Los usuarios son todos registrados por los administradores, eso incluye sus contraseñas.
 - Imponer a usuarios comunes contraseñas complejas con mayusculas, minusculas, numeros y
 caracteres especiales puede resultar engorroso. ⏰
@@ -15,17 +15,15 @@ Posible solucion:
     4. En caso de ser fija el admin se la provee al usuario
     5. Al iniciar sesion por primera vez, se fuerza el cambio de contraseña
 
-14. Charla con Santini:
-    1. Controlador(comprobaciones de los datos) recibe DTO convierte a modelo
-    2. Servicio (regex contraseña no interacción con BD) recibe modelo envia DTO
-    3. Interfaz DAO -> Implementación de ModeloDAOImpl. Entra DTO y se modifica, no sale nada
-    4. Servicio convierto DTO a Modelo -> !! Modifique esta ultima parte para que retorne un booleano
+4. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
 
-15. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
+5. Almacenar refreshTokens en BD para poder revocarlos si es necesario ⏰
 
-17. Almacenar refreshTokens en BD para poder revocarlos si es necesario ⏰
+6. Cambiar tiempo de access token ⏰
 
-18. Cambiar tiempo de access token ⏰
+7. Modificar todo el sistema para que trabaje con exepciones y no con boleanos.
 
-19. Modificar todo el sistema para que trabaje con exepciones y no con boleanos.
-20. Mejorar consultas SQL para traer todos los elementos con Joins en vez de usar los Servicios en los 'gets'
+8. Mejorar consultas SQL para traer todos los elementos con Joins en vez de usar los Servicios en los 'gets'
+
+9. Añadir logica de servicio al crear balances (el cliente solo necesita pasar el stock real y del resto se
+ocupa el sistema).

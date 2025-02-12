@@ -22,6 +22,7 @@ public class ArticuloController {
 
     @PostMapping
     public ResponseEntity<?> crearArticulo(@RequestBody @Valid ArticuloRequest articuloRequest) {
+        // Categoria es opcional
         Categoria categoria = Optional.ofNullable(articuloRequest.getCategoriaId())
                 .flatMap(CategoriaServicio::getCategoriaPorId)
                 .orElse(null);

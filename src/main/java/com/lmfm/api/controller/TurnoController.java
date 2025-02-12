@@ -1,8 +1,9 @@
 package com.lmfm.api.controller;
 
-
 import com.lmfm.api.model.Categoria;
+import com.lmfm.api.model.Turno;
 import com.lmfm.api.service.CategoriaServicio;
+import com.lmfm.api.service.TurnoServicio;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,57 +14,58 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("categorias")
-public class CategoriaController {
+@RequestMapping("turnos")
+public class TurnoController {
 
     @PostMapping
-    public ResponseEntity<?> crearCategoria(@RequestBody @Valid Categoria categoria) {
+    public ResponseEntity<?> crearTurno(@RequestBody @Valid Turno turno) {
 
-        if(!CategoriaServicio.crearCategoria(categoria)) {
+        if(!TurnoServicio.crearTurno(turno)) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(categoria.getId())
+                .buildAndExpand(turno.getId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<?> getCategorias() {
-        List<Categoria> categorias = CategoriaServicio.getCategorias();
+    public ResponseEntity<?> getTurnos() {
+        List<Turno> turnos = TurnoServicio.obtenerTodosLosTurnos();
 
-        if(categorias.isEmpty()) {
+        if(turnos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(categorias);
+        return ResponseEntity.ok(turnos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCategoriaPorId(@PathVariable int id) {
-        Optional<Categoria> categoria = CategoriaServicio.getCategoriaPorId(id);
+    public ResponseEntity<?> getTurnoPorId(@PathVariable int id) {
+        Optional<Turno> turno = TurnoServicio.getTurnoPorId(id);
 
-        if(categoria.isEmpty()) {
+        if(turno.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(categoria.get());
+        return ResponseEntity.ok(turno.get());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCategoriaPorId(@PathVariable int id) {
-        if(!CategoriaServicio.eliminarCategoria(id)){
+    public ResponseEntity<?> eliminarTurnoPorId(@PathVariable int id) {
+        if(!TurnoServicio.eliminarTurno(id)){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().build();
     }
     @PutMapping
-    public ResponseEntity<?> actualizarCategoria(@RequestBody @Valid Categoria categoria) {
-        if(!CategoriaServicio.actualizarCategoria(categoria)){
+    public ResponseEntity<?> actualizarTurno(@RequestBody @Valid Turno turno) {
+        if(!TurnoServicio.actualizarTurno(turno)){
             return ResponseEntity.badRequest().build();
         }
 
         return  ResponseEntity.ok().build();
     }
+
 }

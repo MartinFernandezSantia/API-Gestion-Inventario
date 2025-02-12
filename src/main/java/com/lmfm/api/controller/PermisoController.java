@@ -1,8 +1,9 @@
 package com.lmfm.api.controller;
 
-
 import com.lmfm.api.model.Categoria;
+import com.lmfm.api.model.Permiso;
 import com.lmfm.api.service.CategoriaServicio;
+import com.lmfm.api.service.PermisoServicio;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,54 +14,54 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("categorias")
-public class CategoriaController {
+@RequestMapping("permisos")
+public class PermisoController {
 
     @PostMapping
-    public ResponseEntity<?> crearCategoria(@RequestBody @Valid Categoria categoria) {
+    public ResponseEntity<?> crearPermiso(@RequestBody @Valid Permiso permiso) {
 
-        if(!CategoriaServicio.crearCategoria(categoria)) {
+        if(!PermisoServicio.crearPermiso(permiso)) {
             return ResponseEntity.badRequest().body("Datos incorrectos.");
         }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(categoria.getId())
+                .buildAndExpand(permiso.getId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<?> getCategorias() {
-        List<Categoria> categorias = CategoriaServicio.getCategorias();
+    public ResponseEntity<?> getPermisos() {
+        List<Permiso> permisos = PermisoServicio.obtenerTodosLosPermisos();
 
-        if(categorias.isEmpty()) {
+        if(permisos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(categorias);
+        return ResponseEntity.ok(permisos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCategoriaPorId(@PathVariable int id) {
-        Optional<Categoria> categoria = CategoriaServicio.getCategoriaPorId(id);
+    public ResponseEntity<?> getPermisoPorId(@PathVariable int id) {
+        Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(id);
 
-        if(categoria.isEmpty()) {
+        if(permiso.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(categoria.get());
+        return ResponseEntity.ok(permiso.get());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCategoriaPorId(@PathVariable int id) {
-        if(!CategoriaServicio.eliminarCategoria(id)){
+    public ResponseEntity<?> eliminarPermisoPorId(@PathVariable int id) {
+        if(!PermisoServicio.eliminarPermiso(id)){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().build();
     }
     @PutMapping
-    public ResponseEntity<?> actualizarCategoria(@RequestBody @Valid Categoria categoria) {
-        if(!CategoriaServicio.actualizarCategoria(categoria)){
+    public ResponseEntity<?> actualizarPermiso(@RequestBody @Valid Permiso permiso) {
+        if(!PermisoServicio.actualizarPermiso(permiso)){
             return ResponseEntity.badRequest().build();
         }
 

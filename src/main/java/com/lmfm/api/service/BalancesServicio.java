@@ -17,6 +17,7 @@ public class BalancesServicio {
     public static boolean crearBalance(Balances balance) {
         BalancesRequest balancesRequest = BalancesTranslator.toDTO(balance);
         balancesDAO.insertarBalance(balancesRequest);
+        balance.setId(balancesRequest.getId());
 
         return balancesRequest.getId() != null;
     }
@@ -39,8 +40,7 @@ public class BalancesServicio {
     }
 
     // Buscar balance por ID
-    public static Balances buscarBalancePorId(int id) {
-        Optional<Balances> balanceOpt = balancesDAO.obtenerBalancePorId(id);
-        return balanceOpt.orElse(null); // Retorna null si no encuentra ningún balance por ID
+    public static Optional<Balances> getBalancePorId(int id) {
+        return balancesDAO.obtenerBalancePorId(id);
     }
 }

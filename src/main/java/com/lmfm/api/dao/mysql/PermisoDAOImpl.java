@@ -13,33 +13,14 @@ public class PermisoDAOImpl implements PermisoDAO {
 
     @Override
     public void insertarPermiso(Permiso permiso) {
-        String sql = "INSERT INTO permisos (nivel, descripcion) VALUES (?, ?)";
+        String sql = "INSERT INTO permisos (nombre) VALUES (?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(2, permiso.getNombre());
+            stmt.setString(1, permiso.getNombre());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public Optional<Permiso> obtenerPermisoPorNivel(int nivel) {
-        String sql = "SELECT * FROM permisos WHERE nivel = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, nivel);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Permiso permiso = new Permiso();
-                permiso.setId(rs.getInt("id"));
-                permiso.setNombre(rs.getString("nombre"));
-                return Optional.of(permiso);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
     }
 
     @Override
