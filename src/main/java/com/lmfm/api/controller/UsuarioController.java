@@ -7,6 +7,9 @@ import com.lmfm.api.model.Usuario;
 import com.lmfm.api.service.PermisoServicio;
 import com.lmfm.api.service.UsuarioServicio;
 import com.lmfm.api.translators.UsuarioTranslator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,11 @@ import java.util.Optional;
 @RequestMapping("usuarios")
 public class UsuarioController {
 
+    @Operation(summary = "Crear nuevo Usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuario creado"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos o valores UNIQUE duplicados")
+    })
     @PostMapping
     public ResponseEntity<?> crearUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(usuarioRequest.getPermisoId());
@@ -43,6 +51,11 @@ public class UsuarioController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "Obtener todos los Usuarios")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuarios encontrados"),
+            @ApiResponse(responseCode = "204", description = "No hay Usuarios existentes")
+    })
     @GetMapping
     public ResponseEntity<?> getUsuarios() {
         List<Usuario> usuarios = UsuarioServicio.getUsuarios();
@@ -55,6 +68,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
+    @Operation(summary = "Obtener Usuario por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getUsuarioPorId(@PathVariable int id) {
         Optional<Usuario> usuario = UsuarioServicio.getUsuarioPorId(id);
@@ -67,6 +85,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario.get());
     }
 
+    @Operation(summary = "Obtener Usuario por legajo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @GetMapping("/legajo/{legajo}")
     public ResponseEntity<?> getUsuarioPorLegajo(@PathVariable int legajo) {
         Optional<Usuario> usuario = UsuarioServicio.getUsuarioPorLegajo(legajo);
@@ -79,6 +102,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario.get());
     }
 
+    @Operation(summary = "Eliminar Usuario por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario eliminado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuarioPorId(@PathVariable int id) {
         // Si hubo algun error al eliminar el usuario
@@ -89,6 +117,11 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Actualizar Usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario actualizado"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos o valores UNIQUE duplicados")
+    })
     @PutMapping()
     public ResponseEntity<?> actualizarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(usuarioRequest.getPermisoId());

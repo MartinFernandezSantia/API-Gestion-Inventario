@@ -1,8 +1,13 @@
 package com.lmfm.api.model;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
+
 public class Sector {
+    @Schema(nullable = true)
     private Integer id;
+    @NotEmpty
     private String nombre;
 
     // Constructor por defecto

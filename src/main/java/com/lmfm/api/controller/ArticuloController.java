@@ -7,6 +7,9 @@ import com.lmfm.api.model.Categoria;
 import com.lmfm.api.service.ArticuloServicio;
 import com.lmfm.api.service.CategoriaServicio;
 import com.lmfm.api.translators.ArticuloTranslator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,11 @@ import java.util.Optional;
 @RequestMapping("articulos")
 public class ArticuloController {
 
+    @Operation(summary = "Crear nuevo Articulo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Articulo creado"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos o valores UNIQUE duplicados")
+    })
     @PostMapping
     public ResponseEntity<?> crearArticulo(@RequestBody @Valid ArticuloRequest articuloRequest) {
         // Categoria es opcional
@@ -45,6 +53,11 @@ public class ArticuloController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "Obtener todos los Articulos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Articulos encontrados"),
+            @ApiResponse(responseCode = "204", description = "No hay Articulos existentes")
+    })
     @GetMapping
     public ResponseEntity<?> getArticulos() {
         List<Articulo> articulos = ArticuloServicio.getArticulos();
@@ -55,6 +68,11 @@ public class ArticuloController {
         return ResponseEntity.ok(articulos);
     }
 
+    @Operation(summary = "Obtener Articulo por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Articulo encontrado"),
+            @ApiResponse(responseCode = "404", description = "Articulo no encontrado")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getArticuloPorId(@PathVariable int id) {
         Optional<Articulo> articulo = ArticuloServicio.getArticuloPorId(id);
@@ -65,6 +83,11 @@ public class ArticuloController {
         return ResponseEntity.ok(articulo.get());
     }
 
+    @Operation(summary = "Obtener Articulo por codigo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Articulo encontrado"),
+            @ApiResponse(responseCode = "404", description = "Articulo no encontrado")
+    })
     @GetMapping("/codigo/{codigo}")
     public ResponseEntity<?> getCodigo(@PathVariable int codigo){
         Optional<Articulo> articulo = ArticuloServicio.getArticuloPorCodigo(codigo);
@@ -75,6 +98,11 @@ public class ArticuloController {
         return ResponseEntity.ok(articulo.get());
     }
 
+    @Operation(summary = "Eliminar Articulo por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Articulo eliminado"),
+            @ApiResponse(responseCode = "404", description = "Articulo no encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarArticuloPorId(@PathVariable int id) {
         if(!ArticuloServicio.eliminarArticulo(id)){
@@ -82,6 +110,12 @@ public class ArticuloController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Actualizar Articulo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Articulo actualizado"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos o valores UNIQUE duplicados")
+    })
     @PutMapping
     public ResponseEntity<?> actualizarArticulo(@RequestBody @Valid ArticuloRequest articuloRequest) {
         CategoriaDAOImpl categoriaDAO = new CategoriaDAOImpl();

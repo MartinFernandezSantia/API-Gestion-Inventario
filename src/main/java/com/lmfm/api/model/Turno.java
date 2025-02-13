@@ -1,13 +1,20 @@
 package com.lmfm.api.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.sql.Time;
 import java.util.Objects;
 
 public class Turno {
+    @Schema(nullable = true)
     private Integer id;
+    @NotEmpty
     private String nombre;
+    @NotNull
     private Time horaInicio;
+    @NotNull
     private Time horaFin;
 
     // Constructor por defecto

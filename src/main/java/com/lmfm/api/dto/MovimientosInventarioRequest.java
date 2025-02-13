@@ -1,24 +1,45 @@
 package com.lmfm.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class MovimientosInventarioRequest {
+    @Schema(nullable = true)
     private Integer id;
+
+    @NotNull
     @Positive
     private int articuloId;
+
+    @NotNull
     @Positive
     private int usuarioId;
+
+    @NotNull
     @Positive
     private int turnoId;
+
+    @NotNull
     @Positive
     private int subsectorId;
+
+    @NotNull
     @Min(value = 0)
     private int cantidad;
+
+    @NotNull
     private boolean tipoMovimiento;
+
+    @NotNull
     private boolean esPedido;
+
+    @NotNull
     private boolean esDiferencia;
+
+    @Schema(format = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String fechaHora;
 

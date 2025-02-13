@@ -1,20 +1,35 @@
 package com.lmfm.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class ArticuloRequest {
+    @Schema(nullable = true)
     private Integer id;
+
+    @Schema(nullable = true)
     private Integer codigo;
+
     @NotEmpty
     private String nombre;
+
+    @Schema(nullable = true)
     @Min(value = 0)
     private int stock;
+
+    @Schema(nullable = true)
     @Min(value = 0)
     private Integer limite;
+
+    @NotEmpty
+    @Schema(format = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String fechaHora;
+
+    @Schema(nullable = true)
     @Min(value = 1)
     private Integer categoriaId;
 

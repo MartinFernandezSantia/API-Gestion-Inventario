@@ -1,7 +1,7 @@
 1. Crear middleware para verificar JWT antes de que se acceda a cualquier endpoint menos el de login
 
 2. ¿Deberiamos permitir que la contraseña de los usuarios sea actualizada en el mismo formulario
-para actualizar el resto de los datos, o en uno separado? UX vs Seguridad
+para actualizar el resto de los datos, o en uno separado? UX vs Seguridad ❌
 
 3. Como gestionamos la seguridad de las contraseñas de los usuarios comunes y corrientes?
 - Los usuarios son todos registrados por los administradores, eso incluye sus contraseñas.
@@ -27,3 +27,5 @@ Posible solucion:
 
 9. Añadir logica de servicio al crear balances (el cliente solo necesita pasar el stock real y del resto se
 ocupa el sistema).
+
+10. Configurar logica para la generacion de codigos de Articulos
