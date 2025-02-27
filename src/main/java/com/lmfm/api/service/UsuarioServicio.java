@@ -1,6 +1,7 @@
 package com.lmfm.api.service;
 
 import com.lmfm.api.dao.mysql.UsuarioDAOImpl;
+import com.lmfm.api.dto.ChangePassRequest;
 import com.lmfm.api.dto.UsuarioRequest;
 import com.lmfm.api.model.Usuario;
 import com.lmfm.api.translators.UsuarioTranslator;
@@ -41,9 +42,20 @@ public class UsuarioServicio {
         return usuarioDAO.actualizarUsuario(UsuarioTranslator.toDTO(usuario));
     }
 
+    public static boolean actualizarUsuarioPorLegajo(Usuario usuario) {
+
+        return usuarioDAO.actualizarUsuarioPorLegajo(UsuarioTranslator.toDTO(usuario));
+    }
+
+    public static boolean cambiarPassword(ChangePassRequest changePassRequest) {
+        return usuarioDAO.cambiarPassword(changePassRequest);
+    }
+
     public static boolean eliminarUsuario(int id) {
         return usuarioDAO.eliminarUsuarioPorId(id);
     }
+
+    public static boolean eliminarUsuarioPorLegajo(int legajo) { return usuarioDAO.eliminarUsuarioPorLegajo(legajo); }
 
     public static Optional<Usuario> getUsuarioPorLegajo(int legajo) {
         return usuarioDAO.obtenerUsuarioPorLegajo(legajo);

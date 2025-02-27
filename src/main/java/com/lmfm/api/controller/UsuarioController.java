@@ -1,9 +1,11 @@
 package com.lmfm.api.controller;
 
 
+import com.lmfm.api.dto.ChangePassRequest;
 import com.lmfm.api.dto.UsuarioRequest;
 import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
+import com.lmfm.api.service.AuthServicio;
 import com.lmfm.api.service.PermisoServicio;
 import com.lmfm.api.service.UsuarioServicio;
 import com.lmfm.api.translators.UsuarioTranslator;
@@ -117,6 +119,21 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Eliminar Usuario por Legajo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario eliminado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @DeleteMapping("/legajo/{legajo}")
+    public ResponseEntity<?> eliminarUsuarioPorLegajo(@PathVariable int legajo) {
+        // Si hubo algun error al eliminar el usuario
+        if (!UsuarioServicio.eliminarUsuarioPorLegajo(legajo)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "Actualizar Usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario actualizado"),
@@ -135,6 +152,47 @@ public class UsuarioController {
         // Si hubo algun problema al actualizar al usuario
         if(!UsuarioServicio.actualizarUsuario(usuario)) {
             return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Actualizar Usuario por Legajo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario actualizado"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos o valores UNIQUE duplicados")
+    })
+    @PutMapping("/legajo")
+    public ResponseEntity<?> actualizarUsuarioPorLegajo(@RequestBody @Valid UsuarioRequest usuarioRequest) {
+        Optional<Permiso> permiso = PermisoServicio.getPermisoPorId(usuarioRequest.getPermisoId());
+
+        if (permiso.isEmpty()) {
+            return ResponseEntity.badRequest().body("Datos incorrectos.");
+        }
+
+        Usuario usuario = UsuarioTranslator.fromDTO(usuarioRequest, permiso.get());
+
+        // Si hubo algun problema al actualizar al usuario
+        if(!UsuarioServicio.actualizarUsuario(usuario)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Cambiar contraseña de usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contraseña actualizado"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos")
+    })
+    @PutMapping("/contraseña")
+    public ResponseEntity<?> cambiarPassword(@RequestBody @Valid ChangePassRequest changePassRequest) {
+        if (AuthServicio.validarPassword(changePassRequest.getNewPass())) {
+            return ResponseEntity.badRequest().body("La contraseña no cumple los requisitos");
+        };
+
+        if (!UsuarioServicio.cambiarPassword(changePassRequest)) {
+            return ResponseEntity.badRequest().body("Datos incorrectos");
         }
 
         return ResponseEntity.ok().build();

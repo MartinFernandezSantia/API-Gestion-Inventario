@@ -2,6 +2,7 @@ package com.lmfm.api.dao.mysql;
 
 
 import com.lmfm.api.dao.UsuarioDAO;
+import com.lmfm.api.dto.ChangePassRequest;
 import com.lmfm.api.dto.UsuarioRequest;
 import com.lmfm.api.model.Permiso;
 import com.lmfm.api.model.Usuario;
@@ -128,34 +129,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean actualizarUsuario(UsuarioRequest usuarioRequest) {
-        // Construir la consulta SQL con un SET dinámico basado en los campos proporcionados
-        StringBuilder sql = new StringBuilder("UPDATE usuarios SET nombre = ?, apellido = ?, permiso_id = ?, legajo = ?");
-        String nuevaPassword = usuarioRequest.getPassword();
-
-        // Solo agregar la columna de contraseña si se proporciona una nueva contraseña
-        if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
-            sql.append(", contraseña = ?");
-        }
-
-        sql.append(" WHERE id = ?");
+        String sql = "UPDATE usuarios SET nombre = ?, apellido = ?, permiso_id = ?, legajo = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Establecer los valores para los campos obligatorios
             stmt.setString(1, usuarioRequest.getNombre());
             stmt.setString(2, usuarioRequest.getApellido());
             stmt.setInt(3, usuarioRequest.getPermisoId());
             stmt.setInt(4, usuarioRequest.getLegajo());
-
-            // Si se proporciona una nueva contraseña, establecerla en el PreparedStatement
-            int index = 5;
-            if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
-                stmt.setString(index++, AuthServicio.hashPassword(nuevaPassword));
-            }
-
-            // Establecer el valor del legajo
-            stmt.setInt(index, usuarioRequest.getId());
+            stmt.setInt(5, usuarioRequest.getId());
 
             // Ejecutar la actualización
             int filasAfectadas = stmt.executeUpdate();
@@ -169,6 +152,30 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
+    public boolean actualizarUsuarioPorLegajo(UsuarioRequest usuarioRequest) {
+        String sql = "UPDATE usuarios SET nombre = ?, apellido = ?, permiso_id = ? WHERE legajo = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, usuarioRequest.getNombre());
+            stmt.setString(2, usuarioRequest.getApellido());
+            stmt.setInt(3, usuarioRequest.getPermisoId());
+            stmt.setInt(4, usuarioRequest.getLegajo());
+
+            // Ejecutar la actualización
+            int filasAfectadas = stmt.executeUpdate();
+
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
     public boolean eliminarUsuarioPorId(int id) {
         String sql = "DELETE FROM usuarios WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -178,6 +185,41 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             int filasAfectadas = stmt.executeUpdate();
 
             return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean eliminarUsuarioPorLegajo(int legajo) {
+        String sql = "DELETE FROM usuarios WHERE legajo = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, legajo);
+            int filasAfectadas = stmt.executeUpdate();
+
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean cambiarPassword(ChangePassRequest changePassRequest) {
+        String sql = "UPDATE usuarios SET contraseña = ? WHERE legajo = ? AND contraseña = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String newPass = AuthServicio.hashPassword(changePassRequest.getNewPass());
+            String currPass = AuthServicio.hashPassword(changePassRequest.getCurrentPass());
+
+            stmt.setString(1, newPass);
+            stmt.setInt(2, changePassRequest.getLegajo());
+            stmt.setString(3, currPass);
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
