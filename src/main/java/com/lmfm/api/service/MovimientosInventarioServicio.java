@@ -21,6 +21,10 @@ public class MovimientosInventarioServicio {
         return request.getId() != null;
     }
 
+    public static List<MovimientosInventarioRequest> crearMovimientos(List<MovimientosInventarioRequest> movimientos) {
+        return movimientosInventarioDAO.insertarMovimientos(movimientos);
+    }
+
     public static List<MovimientosInventario> obtenerTodosLosMovimientos() {
         return movimientosInventarioDAO.obtenerTodosLosMovimientos();
     }

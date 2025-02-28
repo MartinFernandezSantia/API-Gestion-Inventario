@@ -49,6 +49,44 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
     }
 
     @Override
+    public List<MovimientosInventarioRequest> insertarMovimientos(List<MovimientosInventarioRequest> movimientos) {
+        String sql = "INSERT IGNORE INTO movimientos_inventario (articulo_id, usuario_id, turno_id, subsector_id, cantidad, tipo_movimiento, es_pedido, es_diferencia, fecha_hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        List<MovimientosInventarioRequest> failedInserts = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            for (MovimientosInventarioRequest movimiento : movimientos) {
+                stmt.setInt(1, movimiento.getArticuloId());
+                stmt.setInt(2, movimiento.getUsuarioId());
+                stmt.setInt(3, movimiento.getTurnoId());
+                stmt.setInt(4, movimiento.getSubsectorId());
+                stmt.setInt(5, movimiento.getCantidad());
+                stmt.setBoolean(6, movimiento.isTipoMovimiento());
+                stmt.setBoolean(7, movimiento.isEsPedido());
+                stmt.setBoolean(8, movimiento.isEsDiferencia());
+                stmt.setTimestamp(9, Timestamp.valueOf(movimiento.getFechaHora()));
+
+                stmt.addBatch();
+            }
+            int[] results = stmt.executeBatch();
+
+            // Separate all failed inserts
+            for (int i = 0; i < results.length; i++) {
+                if (results[i] == 0) {
+                    failedInserts.add(movimientos.get(i));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return failedInserts;
+    }
+
+
+    @Override
     public Optional<MovimientosInventario> obtenerMovimientoPorId(int id) {
         String sql = "SELECT * FROM movimientos_inventario WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();

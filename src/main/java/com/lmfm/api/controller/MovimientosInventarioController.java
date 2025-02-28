@@ -8,12 +8,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -55,6 +57,33 @@ public class MovimientosInventarioController {
 
         return ResponseEntity.created(location).build();
     }
+
+    @Operation(summary = "Crear varios Movimientos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Movimientos creados"),
+            @ApiResponse(responseCode = "400", description = "Ningun Movimiento pudo ser creado"),
+            @ApiResponse(responseCode = "207", description = "Algunos Movimientos no fueron creados")
+    })
+    @PostMapping
+    public ResponseEntity<?> crearVarios(@RequestBody @Valid List<MovimientosInventarioRequest> request) {
+        List<MovimientosInventarioRequest> failedInserts = MovimientosInventarioServicio.crearMovimientos(request);
+
+        if (!failedInserts.isEmpty()) {
+            if (failedInserts.size() == request.size()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "message", "Ningun elemento pudo ser creado",
+                        "failedInserts", failedInserts
+                ));
+            }
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(Map.of(
+                    "message", "Algunos elementos no fueron creados",
+                    "failedInserts", failedInserts
+            ));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Todos los elementos fueron creados");
+    }
+
 
     @Operation(summary = "Obtener todos los Movimientos")
     @ApiResponses(value = {
