@@ -19,7 +19,7 @@ public class SubsectorServicio {
         SubsectorRequest request = SubsectorTranslator.toDTO(subsector);
         subsectorDAO.insertarSubsector(request);
 
-        return subsector.getId() != null;
+        return request.getId() != null;
     }
 
     // Listar subsectores
