@@ -64,7 +64,7 @@ public class MovimientosInventarioController {
             @ApiResponse(responseCode = "400", description = "Ningun Movimiento pudo ser creado"),
             @ApiResponse(responseCode = "207", description = "Algunos Movimientos no fueron creados")
     })
-    @PostMapping
+    @PostMapping("/varios")
     public ResponseEntity<?> crearVarios(@RequestBody @Valid List<MovimientosInventarioRequest> request) {
         List<MovimientosInventarioRequest> failedInserts = MovimientosInventarioServicio.crearMovimientos(request);
 
