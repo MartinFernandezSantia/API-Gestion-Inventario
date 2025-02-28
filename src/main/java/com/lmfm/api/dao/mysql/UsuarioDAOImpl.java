@@ -25,7 +25,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(1, usuarioRequest.getNombre());
             stmt.setString(2, usuarioRequest.getApellido());
             stmt.setInt(3, usuarioRequest.getLegajo());
-            stmt.setString(4, AuthServicio.hashPassword(usuarioRequest.getPassword()));
+            stmt.setString(4, usuarioRequest.getPassword());
             stmt.setInt(5, usuarioRequest.getPermisoId());
 
             int rowsAfectadas = stmt.executeUpdate();
@@ -209,20 +209,40 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean cambiarPassword(ChangePassRequest changePassRequest) {
-        String sql = "UPDATE usuarios SET contraseña = ? WHERE legajo = ? AND contraseña = ?";
+        String sql = "UPDATE usuarios SET contraseña = ? WHERE legajo = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String storedPassw = getStoredPassword(changePassRequest.getLegajo());
+            if (!AuthServicio.checkPassword(changePassRequest.getCurrentPass(), storedPassw)) {
+                return false;
+            }
+
             String newPass = AuthServicio.hashPassword(changePassRequest.getNewPass());
-            String currPass = AuthServicio.hashPassword(changePassRequest.getCurrentPass());
 
             stmt.setString(1, newPass);
             stmt.setInt(2, changePassRequest.getLegajo());
-            stmt.setString(3, currPass);
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // Helper function to retrieve stored password hash
+    private String getStoredPassword(int legajo) throws SQLException {
+        String sql = "SELECT contraseña FROM usuarios WHERE legajo = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, legajo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("contraseña");
+                }
+            }
+        }
+        throw new IllegalArgumentException("User not found");
     }
 }
