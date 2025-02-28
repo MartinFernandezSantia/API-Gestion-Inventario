@@ -11,7 +11,7 @@ public class CreateDatabaseAndTables {
         String permisosTableSQL =
                 "CREATE TABLE IF NOT EXISTS permisos (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "nombre VARCHAR(256)) UNIQUE";
+                "nombre VARCHAR(256) UNIQUE)";
         String usuariosTableSQL =
                 "CREATE TABLE IF NOT EXISTS usuarios (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
