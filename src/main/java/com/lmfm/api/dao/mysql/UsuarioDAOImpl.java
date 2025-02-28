@@ -25,7 +25,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(1, usuarioRequest.getNombre());
             stmt.setString(2, usuarioRequest.getApellido());
             stmt.setInt(3, usuarioRequest.getLegajo());
-            stmt.setString(4, usuarioRequest.getPassword());
+            stmt.setString(4, AuthServicio.hashPassword(usuarioRequest.getPassword()));
             stmt.setInt(5, usuarioRequest.getPermisoId());
 
             int rowsAfectadas = stmt.executeUpdate();
