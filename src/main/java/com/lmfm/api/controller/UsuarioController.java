@@ -187,7 +187,7 @@ public class UsuarioController {
     })
     @PutMapping("/contraseña")
     public ResponseEntity<?> cambiarPassword(@RequestBody @Valid ChangePassRequest changePassRequest) {
-        if (AuthServicio.validarPassword(changePassRequest.getNewPass())) {
+        if (!AuthServicio.validarPassword(changePassRequest.getNewPass())) {
             return ResponseEntity.badRequest().body("La contraseña no cumple los requisitos");
         };
 
