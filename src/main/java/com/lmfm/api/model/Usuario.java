@@ -14,7 +14,7 @@ public class Usuario {
     private int legajo;
     private Permiso permiso;
 
-    //@JsonIgnore // Evita que se retorne la password en los endpoints
+    @JsonIgnore // Evita que se retorne la password en los endpoints
     private String password;
 
     // Constructor, getters y setters

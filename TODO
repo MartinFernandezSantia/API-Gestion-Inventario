@@ -1,22 +1,5 @@
 1. Crear middleware para verificar JWT antes de que se acceda a cualquier endpoint menos el de login
 
-2. ¿Deberiamos permitir que la contraseña de los usuarios sea actualizada en el mismo formulario
-para actualizar el resto de los datos, o en uno separado? UX vs Seguridad ❌
-
-3. Como gestionamos la seguridad de las contraseñas de los usuarios comunes y corrientes?
-- Los usuarios son todos registrados por los administradores, eso incluye sus contraseñas.
-- Imponer a usuarios comunes contraseñas complejas con mayusculas, minusculas, numeros y
-caracteres especiales puede resultar engorroso. ⏰
-
-Posible solucion:
-    1. El admin crea al nuevo usuario
-    2. Se genera una contraseña aleatoria y segura o fija y segura
-    3. En caso de ser aleatoria se envia por mail al usuario
-    4. En caso de ser fija el admin se la provee al usuario
-    5. Al iniciar sesion por primera vez, se fuerza el cambio de contraseña
-
-4. Arreglar que el endpoint para devolver usuarios retorna objeto de Permiso en vez que id o nivel
-
 5. Almacenar refreshTokens en BD para poder revocarlos si es necesario ⏰
 
 6. Cambiar tiempo de access token ⏰

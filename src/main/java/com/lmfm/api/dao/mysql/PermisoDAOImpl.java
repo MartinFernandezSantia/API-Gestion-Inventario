@@ -17,7 +17,17 @@ public class PermisoDAOImpl implements PermisoDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, permiso.getNombre());
-            stmt.executeUpdate();
+
+            int rowsAfectadas = stmt.executeUpdate();
+
+            if (rowsAfectadas > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    permiso.setId(id);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -11,6 +11,7 @@ public interface ArticuloDAO {
     Optional<Articulo> obtenerArticuloPorCodigo(int codigo);
     Optional<Articulo> obtenerArticuloPorId(int id);
     List<Articulo> obtenerTodosLosArticulos();
-    boolean actualizarArticulo(ArticuloRequest articulo);
+    boolean actualizarArticuloPorCodigo(ArticuloRequest articulo);
+    boolean actualizarStock(int articuloID, int cantidad);
     boolean eliminarArticuloPorId(int id);
 }

@@ -18,7 +18,15 @@ public class MovimientosInventarioServicio {
         movimientosInventarioDAO.insertarMovimiento(request);
         movimientosInventario.setId(request.getId());
 
-        return request.getId() != null;
+        if (request.getId() != null) {
+            ArticuloServicio.actualizarStock(
+                    request.getArticuloId(),
+                    request.getCantidad() >= 0 ? request.getCantidad() : -request.getCantidad()
+            );
+            return true;
+        }
+
+        return false;
     }
 
     public static List<MovimientosInventarioRequest> crearMovimientos(List<MovimientosInventarioRequest> movimientos) {

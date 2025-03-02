@@ -29,7 +29,7 @@ public class ArticuloServicio {
     public static boolean actualizarArticulo(Articulo articulo) {
         ArticuloRequest articuloRequest = ArticuloTranslator.toDTO(articulo);
 
-        return articuloDAO.actualizarArticulo(articuloRequest);
+        return articuloDAO.actualizarArticuloPorCodigo(articuloRequest);
     }
 
     public static boolean eliminarArticulo(int id) {
@@ -44,5 +44,5 @@ public class ArticuloServicio {
         return articuloDAO.obtenerArticuloPorId(id);
     }
 
-
+    public static boolean actualizarStock(int articuloId, int cantidad) { return articuloDAO.actualizarStock(articuloId, cantidad); }
 }

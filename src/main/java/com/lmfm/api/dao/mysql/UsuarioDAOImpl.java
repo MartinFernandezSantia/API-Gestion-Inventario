@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
+    String HARDCODED_PASSW = AuthServicio.hashPassword("Admin123@");
 
     @Override
     public void insertarUsuario(UsuarioRequest usuarioRequest) {
@@ -25,7 +26,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
             stmt.setString(1, usuarioRequest.getNombre());
             stmt.setString(2, usuarioRequest.getApellido());
             stmt.setInt(3, usuarioRequest.getLegajo());
-            stmt.setString(4, usuarioRequest.getPassword());
+            stmt.setString(4, HARDCODED_PASSW);
             stmt.setInt(5, usuarioRequest.getPermisoId());
 
             int rowsAfectadas = stmt.executeUpdate();

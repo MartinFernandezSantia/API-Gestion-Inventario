@@ -18,15 +18,15 @@ public class UsuarioServicio {
     public UsuarioServicio() {}
 
     public static boolean crearUsuario(Usuario usuario) {
-        boolean passwordValida = AuthServicio.validarPassword(usuario.getPassword());
+//        boolean passwordValida = AuthServicio.validarPassword(usuario.getPassword());
 
         // Verifico si la contraseña cumple con los requerimientos
-        if (!passwordValida) {
-            return false;
-        }
+//        if (!passwordValida) {
+//            return false;
+//        }
 
         // Hasheo la contraseña
-        usuario.setPassword(AuthServicio.hashPassword(usuario.getPassword()));
+//        usuario.setPassword(AuthServicio.hashPassword(usuario.getPassword()));
 
         // Creo al usuario
         UsuarioRequest usuarioRequest = UsuarioTranslator.toDTO(usuario);

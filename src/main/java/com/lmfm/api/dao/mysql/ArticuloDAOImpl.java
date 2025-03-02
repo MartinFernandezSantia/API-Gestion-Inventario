@@ -132,7 +132,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
     }
 
     @Override
-    public boolean actualizarArticulo(ArticuloRequest articulo) {
+    public boolean actualizarArticuloPorCodigo(ArticuloRequest articulo) {
         String sql = "UPDATE articulos SET nombre = ?, stock = ?, limite = ?, categoria_id = ? WHERE codigo = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -156,6 +156,20 @@ public class ArticuloDAOImpl implements ArticuloDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean actualizarStock(int articuloID, int cantidad) {
+        String sql = "UPDATE articulos SET stock = stock + ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cantidad);
+            stmt.setInt(2, articuloID);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
