@@ -29,6 +29,15 @@ public class Usuario {
         this.permiso = permiso;
     }
 
+    public Usuario(Integer id, String nombre, String apellido, Timestamp fechaHora, int legajo, Permiso permiso) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaHora = fechaHora;
+        this.legajo = legajo;
+        this.permiso = permiso;
+    }
+
     public Integer getId() {
         return id;
     }
