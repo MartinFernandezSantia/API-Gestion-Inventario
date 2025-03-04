@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MovimientosInventarioDAO {
     void insertarMovimiento(MovimientosInventarioRequest movimiento);
-    List<MovimientosInventarioRequest> insertarMovimientos(List<MovimientosInventarioRequest> movimientos);
+    List<Integer> insertarMovimientos(List<MovimientosInventarioRequest> movimientos);
     Optional<MovimientosInventario> obtenerMovimientoPorId(int id);
     List<MovimientosInventario> obtenerTodosLosMovimientos();
     boolean actualizarMovimiento(MovimientosInventarioRequest movimiento);

@@ -29,7 +29,7 @@ public class MovimientosInventarioServicio {
         return false;
     }
 
-    public static List<MovimientosInventarioRequest> crearMovimientos(List<MovimientosInventarioRequest> movimientos) {
+    public static List<Integer> crearMovimientos(List<MovimientosInventarioRequest> movimientos) {
         return movimientosInventarioDAO.insertarMovimientos(movimientos);
     }
 

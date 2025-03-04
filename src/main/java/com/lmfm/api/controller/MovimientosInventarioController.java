@@ -66,19 +66,15 @@ public class MovimientosInventarioController {
     })
     @PostMapping("/varios")
     public ResponseEntity<?> crearVarios(@RequestBody @Valid List<MovimientosInventarioRequest> request) {
-        List<MovimientosInventarioRequest> failedInserts = MovimientosInventarioServicio.crearMovimientos(request);
+        List<Integer> failedInserts = MovimientosInventarioServicio.crearMovimientos(request);
 
         if (!failedInserts.isEmpty()) {
+	    // If all Movimientos failed to be inserted
             if (failedInserts.size() == request.size()) {
-                return ResponseEntity.badRequest().body(Map.of(
-                        "message", "Ningun elemento pudo ser creado",
-                        "failedInserts", failedInserts
-                ));
+                return ResponseEntity.badRequest().body(failedInserts);
             }
-            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(Map.of(
-                    "message", "Algunos elementos no fueron creados",
-                    "failedInserts", failedInserts
-            ));
+	    // If some Movimientos failed to be inserted
+            return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(failedInserts);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Todos los elementos fueron creados");

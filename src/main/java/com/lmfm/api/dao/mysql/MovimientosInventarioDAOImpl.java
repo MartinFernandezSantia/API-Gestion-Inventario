@@ -49,10 +49,10 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
     }
 
     @Override
-    public List<MovimientosInventarioRequest> insertarMovimientos(List<MovimientosInventarioRequest> movimientos) {
+    public List<Integer> insertarMovimientos(List<MovimientosInventarioRequest> movimientos) {
         String sql = "INSERT IGNORE INTO movimientos_inventario (articulo_id, usuario_id, turno_id, subsector_id, cantidad, tipo_movimiento, es_pedido, es_diferencia, fecha_hora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        List<MovimientosInventarioRequest> failedInserts = new ArrayList<>();
+        List<Integer> failedInserts = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -75,7 +75,7 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
             // Separate all failed inserts
             for (int i = 0; i < results.length; i++) {
                 if (results[i] == 0) {
-                    failedInserts.add(movimientos.get(i));
+                    failedInserts.add(movimientos.get(i).getId());
                 }
             }
         } catch (SQLException e) {
