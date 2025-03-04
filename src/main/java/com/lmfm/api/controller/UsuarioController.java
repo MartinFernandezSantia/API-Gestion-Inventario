@@ -185,7 +185,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Contraseña actualizado"),
             @ApiResponse(responseCode = "400", description = "Datos incorrectos")
     })
-    @PutMapping("/contraseña")
+    @PutMapping("/password")
     public ResponseEntity<?> cambiarPassword(@RequestBody @Valid ChangePassRequest changePassRequest) {
         if (!AuthServicio.validarPassword(changePassRequest.getNewPass())) {
             return ResponseEntity.badRequest().body("La contraseña no cumple los requisitos");
