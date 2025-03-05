@@ -68,6 +68,11 @@ public class MovimientosInventarioController {
     public ResponseEntity<?> crearVarios(@RequestBody @Valid List<MovimientosInventarioRequest> request) {
         List<Integer> failedInserts = MovimientosInventarioServicio.crearMovimientos(request);
 
+        System.out.println(request.size());
+        for (MovimientosInventarioRequest request1 : request) {
+            System.out.println(request1.toString());
+        }
+
         if (!failedInserts.isEmpty()) {
 	    // If all Movimientos failed to be inserted
             if (failedInserts.size() == request.size()) {

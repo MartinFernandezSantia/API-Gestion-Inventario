@@ -122,4 +122,20 @@ public class MovimientosInventarioRequest {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "MovimientosInventarioRequest{" +
+                "id=" + id +
+                ", articuloId=" + articuloId +
+                ", usuarioId=" + usuarioId +
+                ", turnoId=" + turnoId +
+                ", subsectorId=" + subsectorId +
+                ", cantidad=" + cantidad +
+                ", tipoMovimiento=" + tipoMovimiento +
+                ", esPedido=" + esPedido +
+                ", esDiferencia=" + esDiferencia +
+                ", fechaHora='" + fechaHora + '\'' +
+                '}';
+    }
 }
