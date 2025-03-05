@@ -63,6 +63,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setLegajo(rs.getInt("legajo"));
                 usuario.setPassword(rs.getString("contraseña"));
                 usuario.setPermiso(permiso.get());
+                usuario.setBorrado(rs.getBoolean("borrado"));
+
 
                 return Optional.of(usuario);
             }
@@ -91,6 +93,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setLegajo(rs.getInt("legajo"));
                 usuario.setPassword(rs.getString("contraseña"));
                 usuario.setPermiso(permiso.get());
+                usuario.setBorrado(rs.getBoolean("borrado"));
+
 
                 return Optional.of(usuario);
             }
@@ -119,6 +123,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
                 usuario.setLegajo(rs.getInt("legajo"));
                 usuario.setPassword(rs.getString("contraseña"));
                 usuario.setPermiso(permiso.get());
+                usuario.setBorrado(rs.getBoolean("borrado"));
 
                 usuarios.add(usuario);
             }
@@ -184,6 +189,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
             stmt.setInt(1, id);
             int filasAfectadas = stmt.executeUpdate();
+            System.out.println("Borrando usuario: " + id);
 
             return filasAfectadas > 0;
         } catch (SQLException e) {

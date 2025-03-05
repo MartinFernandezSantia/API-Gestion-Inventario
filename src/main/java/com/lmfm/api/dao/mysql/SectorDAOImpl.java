@@ -45,6 +45,8 @@ public class SectorDAOImpl implements SectorDAO {
                 Sector sector = new Sector();
                 sector.setId(rs.getInt("id"));
                 sector.setNombre(rs.getString("nombre"));
+                sector.setBorrado(rs.getBoolean("borrado"));
+
                 return Optional.of(sector);
             }
         } catch (SQLException e) {
@@ -64,6 +66,8 @@ public class SectorDAOImpl implements SectorDAO {
                 Sector sector = new Sector();
                 sector.setId(rs.getInt("id"));
                 sector.setNombre(rs.getString("nombre"));
+                sector.setBorrado(rs.getBoolean("borrado"));
+
                 sectores.add(sector);
             }
         } catch (SQLException e) {

@@ -44,6 +44,8 @@ public class PermisoDAOImpl implements PermisoDAO {
                 Permiso permiso = new Permiso();
                 permiso.setId(rs.getInt("id"));
                 permiso.setNombre(rs.getString("nombre"));
+                permiso.setBorrado(rs.getBoolean("borrado"));
+
                 return Optional.of(permiso);
             }
         } catch (SQLException e) {
@@ -63,6 +65,8 @@ public class PermisoDAOImpl implements PermisoDAO {
                 Permiso permiso = new Permiso();
                 permiso.setId(rs.getInt("id"));
                 permiso.setNombre(rs.getString("nombre"));
+                permiso.setBorrado(rs.getBoolean("borrado"));
+
                 permisos.add(permiso);
             }
         } catch (SQLException e) {

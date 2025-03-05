@@ -51,6 +51,8 @@ public class SubsectorDAOImpl implements SubsectorDAO {
                 subsector.setId(rs.getInt("id"));
                 subsector.setNombre(rs.getString("nombre"));
                 subsector.setSector(sector);
+                subsector.setBorrado(rs.getBoolean("borrado"));
+
                 return Optional.of(subsector);
             }
         } catch (SQLException e) {
@@ -73,6 +75,8 @@ public class SubsectorDAOImpl implements SubsectorDAO {
                 subsector.setId(rs.getInt("id"));
                 subsector.setNombre(rs.getString("nombre"));
                 subsector.setSector(sector);
+                subsector.setBorrado(rs.getBoolean("borrado"));
+
                 subsectores.add(subsector);
             }
         } catch (SQLException e) {

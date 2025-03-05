@@ -63,6 +63,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
                 articulo.setLimite(rs.getObject("limite", Integer.class));
                 articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
                 articulo.setCategoria(categoria);
+                articulo.setBorrado(rs.getBoolean("borrado"));
 
                 return Optional.of(articulo);
             }
@@ -93,6 +94,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
                 articulo.setLimite(rs.getObject("limite", Integer.class));
                 articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
                 articulo.setCategoria(categoria);
+                articulo.setBorrado(rs.getBoolean("borrado"));
 
                 return Optional.of(articulo);
             }
@@ -122,6 +124,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
                 articulo.setLimite(rs.getObject("limite", Integer.class));
                 articulo.setFechaHora(rs.getTimestamp("fecha_hora"));
                 articulo.setCategoria(categoria);
+                articulo.setBorrado(rs.getBoolean("borrado"));
 
                 articulos.add(articulo);
             }

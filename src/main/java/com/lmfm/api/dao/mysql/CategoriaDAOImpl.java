@@ -44,6 +44,8 @@ public class CategoriaDAOImpl implements CategoriaDAO {
                 Categoria categoria = new Categoria();
                 categoria.setId(rs.getInt("id"));
                 categoria.setNombre(rs.getString("nombre"));
+                categoria.setBorrado(rs.getBoolean("borrado"));
+
                 return Optional.of(categoria);
             }
         } catch (SQLException e) {
@@ -63,6 +65,8 @@ public class CategoriaDAOImpl implements CategoriaDAO {
                 Categoria categoria = new Categoria();
                 categoria.setId(rs.getInt("id"));
                 categoria.setNombre(rs.getString("nombre"));
+                categoria.setBorrado(rs.getBoolean("borrado"));
+
                 categorias.add(categoria);
             }
         } catch (SQLException e) {

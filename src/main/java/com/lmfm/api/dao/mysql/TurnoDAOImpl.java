@@ -48,6 +48,8 @@ public class TurnoDAOImpl implements TurnoDAO {
                 turno.setNombre(rs.getString("nombre"));
                 turno.setHoraInicio(rs.getTime("hora_inicio"));
                 turno.setHoraFin(rs.getTime("hora_fin"));
+                turno.setBorrado(rs.getBoolean("borrado"));
+
                 return Optional.of(turno);
             }
         } catch (SQLException e) {
@@ -69,6 +71,8 @@ public class TurnoDAOImpl implements TurnoDAO {
                 turno.setNombre(rs.getString("nombre"));
                 turno.setHoraInicio(rs.getTime("hora_inicio"));
                 turno.setHoraFin(rs.getTime("hora_fin"));
+                turno.setBorrado(rs.getBoolean("borrado"));
+
                 turnos.add(turno);
             }
         } catch (SQLException e) {
