@@ -182,7 +182,7 @@ public class UsuarioController {
 
     @Operation(summary = "Cambiar contraseña de usuario")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Contraseña actualizado"),
+            @ApiResponse(responseCode = "200", description = "Contraseña actualizada"),
             @ApiResponse(responseCode = "400", description = "Datos incorrectos")
     })
     @PutMapping("/password")
@@ -192,6 +192,20 @@ public class UsuarioController {
         };
 
         if (!UsuarioServicio.cambiarPassword(changePassRequest)) {
+            return ResponseEntity.badRequest().body("Datos incorrectos");
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Blanquear contraseña de usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contraseña actualizada"),
+            @ApiResponse(responseCode = "400", description = "Datos incorrectos")
+    })
+    @PutMapping("/password/{legajo}")
+    public ResponseEntity<?> blanquearPassword(@PathVariable("legajo") int legajo) {
+        if (!UsuarioServicio.blanquearPasswordPorLegajo(legajo)) {
             return ResponseEntity.badRequest().body("Datos incorrectos");
         }
 

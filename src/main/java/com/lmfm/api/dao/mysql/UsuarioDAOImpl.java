@@ -237,6 +237,24 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         }
     }
 
+    @Override
+    public boolean blanquearPasswordPorLegajo(int legajo) {
+        String sql = "UPDATE usuarios SET contraseña = ? WHERE legajo = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String newPass = AuthServicio.hashPassword(HARDCODED_PASSW);
+
+            stmt.setString(1, newPass);
+            stmt.setInt(2, legajo);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // Helper function to retrieve stored password hash
     private String getStoredPassword(int legajo) throws SQLException {
         String sql = "SELECT contraseña FROM usuarios WHERE legajo = ?";

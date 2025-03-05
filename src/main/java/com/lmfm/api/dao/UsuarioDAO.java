@@ -16,4 +16,5 @@ public interface UsuarioDAO {
     boolean eliminarUsuarioPorId(int id);
     boolean eliminarUsuarioPorLegajo(int legajo);
     boolean cambiarPassword(ChangePassRequest changePassRequest);
+    boolean blanquearPasswordPorLegajo(int legajo);
 }

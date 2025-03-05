@@ -51,6 +51,10 @@ public class UsuarioServicio {
         return usuarioDAO.cambiarPassword(changePassRequest);
     }
 
+    public static boolean blanquearPasswordPorLegajo(int legajo) {
+        return usuarioDAO.blanquearPasswordPorLegajo(legajo);
+    }
+
     public static boolean eliminarUsuario(int id) {
         return usuarioDAO.eliminarUsuarioPorId(id);
     }
