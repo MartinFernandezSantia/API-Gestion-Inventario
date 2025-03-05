@@ -97,7 +97,7 @@ public class AuthServicio {
         Map<String, String> tokens = new HashMap<>();
         Optional<Usuario> usuario = UsuarioServicio.getUsuarioPorLegajo(loginRequest.getLegajo());
 
-        if (usuario.isPresent()) {
+        if (usuario.isPresent() && !usuario.get().isBorrado()) {
             if (AuthServicio.checkPassword(loginRequest.getPassword(), usuario.get().getPassword())) {
                 String accessToken = generarAccessToken(usuario.get().getId(), usuario.get().getPermiso().getId());
                 // String refreshToken = generarRefreshToken(usuario.get().getLegajo());
