@@ -4,6 +4,7 @@ public class Subsector {
     private Integer id;
     private String nombre;
     private Sector sector;
+    private boolean borrado;
 
     // Constructor por defecto
     public Subsector() {}
@@ -38,6 +39,14 @@ public class Subsector {
 
     public void setSector(Sector sector) {
         this.sector = sector;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 
     @Override

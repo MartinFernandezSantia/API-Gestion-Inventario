@@ -16,6 +16,8 @@ public class Turno {
     private Time horaInicio;
     @NotNull
     private Time horaFin;
+    @Schema(nullable = true)
+    private boolean borrado = false;
 
     // Constructor por defecto
     public Turno() {}
@@ -59,6 +61,14 @@ public class Turno {
 
     public void setHoraFin(Time horaFin) {
         this.horaFin = horaFin;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 
     @Override

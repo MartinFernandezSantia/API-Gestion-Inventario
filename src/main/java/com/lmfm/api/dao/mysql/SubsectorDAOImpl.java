@@ -98,7 +98,7 @@ public class SubsectorDAOImpl implements SubsectorDAO {
 
     @Override
     public boolean eliminarSubsectorPorId(int id) {
-        String sql = "DELETE FROM subsectores WHERE id = ?";
+        String sql = "UPDATE subsectores SET borrado = 1 WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

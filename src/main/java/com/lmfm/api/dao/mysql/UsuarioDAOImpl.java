@@ -178,7 +178,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean eliminarUsuarioPorId(int id) {
-        String sql = "DELETE FROM usuarios WHERE id = ?";
+        String sql = "UPDATE usuarios SET borrado = 1 WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -194,7 +194,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean eliminarUsuarioPorLegajo(int legajo) {
-        String sql = "DELETE FROM usuarios WHERE legajo = ?";
+        String sql = "UPDATE usuarios SET borrado = 1 WHERE legajo = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

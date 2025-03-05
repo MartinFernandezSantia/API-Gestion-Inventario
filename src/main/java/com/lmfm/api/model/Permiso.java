@@ -8,6 +8,8 @@ public class Permiso {
     private Integer id;
     @NotEmpty
     private String nombre;
+    @Schema(nullable = true)
+    private boolean borrado = false;
 
     // Constructor, getters y setters
 
@@ -32,5 +34,13 @@ public class Permiso {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 }

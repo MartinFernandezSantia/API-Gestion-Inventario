@@ -152,7 +152,7 @@ public class ArticuloDAOImpl implements ArticuloDAO {
 
     @Override
     public boolean eliminarArticuloPorId(int id) {
-        String sql = "DELETE FROM articulos WHERE id = ?";
+        String sql = "UPDATE articulos SET borrado = 1 WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

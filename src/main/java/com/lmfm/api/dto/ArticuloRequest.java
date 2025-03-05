@@ -33,6 +33,9 @@ public class ArticuloRequest {
     @Min(value = 1)
     private Integer categoriaId;
 
+    @Schema(nullable = true)
+    private boolean borrado = false;
+
     public Integer getId() {
         return id;
     }
@@ -87,5 +90,13 @@ public class ArticuloRequest {
 
     public void setCategoriaId(Integer categoriaId) {
         this.categoriaId = categoriaId;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 }

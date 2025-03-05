@@ -88,7 +88,7 @@ public class SectorDAOImpl implements SectorDAO {
 
     @Override
     public boolean eliminarSectorPorId(int id) {
-        String sql = "DELETE FROM sectores WHERE id = ?";
+        String sql = "UPDATE sectores SET borrado = 1 WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

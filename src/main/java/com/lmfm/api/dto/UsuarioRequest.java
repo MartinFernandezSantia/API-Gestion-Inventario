@@ -1,6 +1,7 @@
 package com.lmfm.api.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +27,9 @@ public class UsuarioRequest {
     @NotNull
     @Positive
     private int permisoId;
+
+    @Schema(nullable = true)
+    private boolean borrado = false;
 
     public Integer getId() {
         return id;
@@ -73,5 +77,13 @@ public class UsuarioRequest {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 }

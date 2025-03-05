@@ -10,6 +10,7 @@ public class Articulo {
     private Integer limite;
     private Timestamp fechaHora;
     private Categoria categoria;
+    private boolean borrado;
 
     // Constructor, getters y setters
 
@@ -79,5 +80,13 @@ public class Articulo {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 }

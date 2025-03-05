@@ -87,7 +87,7 @@ public class PermisoDAOImpl implements PermisoDAO {
 
     @Override
     public boolean eliminarPermisoPorId(int id) {
-        String sql = "DELETE FROM permisos WHERE id = ?";
+        String sql = "UPDATE permisos SET borrado = 1 WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

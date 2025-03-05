@@ -96,7 +96,7 @@ public class TurnoDAOImpl implements TurnoDAO {
 
     @Override
     public boolean eliminarTurnoPorId(int id) {
-        String sql = "DELETE FROM turnos WHERE id = ?";
+        String sql = "UPDATE turnos SET borrado = 1 WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);

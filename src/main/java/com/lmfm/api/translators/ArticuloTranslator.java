@@ -20,6 +20,7 @@ public class ArticuloTranslator {
         articulo.setLimite(articuloRequest.getLimite());
         articulo.setCategoria(categoria);
         articulo.setFechaHora(Timestamp.valueOf(articuloRequest.getFechaHora()));
+        articulo.setBorrado(articuloRequest.isBorrado());
 
         return articulo;
     }
@@ -34,6 +35,7 @@ public class ArticuloTranslator {
         articuloRequest.setLimite(articulo.getLimite());
         articuloRequest.setFechaHora(articulo.getFechaHora().toString());
         articuloRequest.setCategoriaId(articulo.getCategoria() == null ? null : articulo.getCategoria().getId());
+        articuloRequest.setBorrado(articulo.isBorrado());
 
         return articuloRequest;
     }

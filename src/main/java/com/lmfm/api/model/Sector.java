@@ -9,6 +9,8 @@ public class Sector {
     private Integer id;
     @NotEmpty
     private String nombre;
+    @Schema(nullable = true)
+    private boolean borrado = false;
 
     // Constructor por defecto
     public Sector() {}
@@ -34,6 +36,14 @@ public class Sector {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 
     @Override

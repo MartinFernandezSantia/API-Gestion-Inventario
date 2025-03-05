@@ -16,6 +16,9 @@ public class SubsectorRequest {
     @Positive
     private int sectorId;
 
+    @Schema(nullable = true)
+    private boolean borrado = false;
+
     public Integer getId() {
         return id;
     }
@@ -38,5 +41,13 @@ public class SubsectorRequest {
 
     public void setSectorId(int sectorId) {
         this.sectorId = sectorId;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 }

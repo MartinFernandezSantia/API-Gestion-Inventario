@@ -12,6 +12,7 @@ public class SubsectorTranslator {
         subsector.setNombre(subsectorRequest.getNombre());
         subsector.setId(subsectorRequest.getId());
         subsector.setSector(sector);
+        subsector.setBorrado(subsectorRequest.isBorrado());
 
         return subsector;
     }
@@ -22,6 +23,7 @@ public class SubsectorTranslator {
         request.setSectorId(subsector.getSector().getId());
         request.setId(subsector.getId());
         request.setNombre(subsector.getNombre());
+        request.setBorrado(subsector.isBorrado());
 
         return request;
     }

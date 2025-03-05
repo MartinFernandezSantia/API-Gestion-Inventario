@@ -13,6 +13,7 @@ public class Usuario {
     private Timestamp fechaHora;
     private int legajo;
     private Permiso permiso;
+    private boolean borrado;
 
     @JsonIgnore // Evita que se retorne la password en los endpoints
     private String password;
@@ -92,6 +93,14 @@ public class Usuario {
 
     public void setPermiso(Permiso permiso) {
         this.permiso = permiso;
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
     }
 
     @Override

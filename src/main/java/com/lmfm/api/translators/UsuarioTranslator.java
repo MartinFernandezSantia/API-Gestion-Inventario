@@ -18,6 +18,7 @@ public class UsuarioTranslator {
         usuario.setLegajo(usuarioRequest.getLegajo());
         usuario.setPassword(usuarioRequest.getPassword());
         usuario.setPermiso(permiso);
+        usuario.setBorrado(usuarioRequest.isBorrado());
 
         return usuario;
     }
@@ -31,6 +32,7 @@ public class UsuarioTranslator {
         usuarioRequest.setLegajo(usuario.getLegajo());
         usuarioRequest.setPassword(usuario.getPassword());
         usuarioRequest.setPermisoId(usuario.getPermiso().getId());
+        usuarioRequest.setBorrado(usuario.isBorrado());
 
         return usuarioRequest;
     }
