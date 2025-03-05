@@ -243,9 +243,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            String newPass = AuthServicio.hashPassword(HARDCODED_PASSW);
-
-            stmt.setString(1, newPass);
+            stmt.setString(1, HARDCODED_PASSW);
             stmt.setInt(2, legajo);
 
             return stmt.executeUpdate() > 0;
