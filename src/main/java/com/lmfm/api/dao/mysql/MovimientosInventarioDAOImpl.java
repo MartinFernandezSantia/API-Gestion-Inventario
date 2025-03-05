@@ -166,7 +166,8 @@ public class MovimientosInventarioDAOImpl implements MovimientosInventarioDAO {
                 "JOIN subsectores s ON m.subsector_id = s.id\n" +
                 "JOIN categorias c ON a.categoria_id = c.id\n" +
                 "JOIN sectores ON s.sector_id = sectores.id\n" +
-                "JOIN permisos p ON u.permiso_id = p.id";
+                "JOIN permisos p ON u.permiso_id = p.id\n" +
+                "ORDER BY movimiento_id";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
