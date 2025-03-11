@@ -21,7 +21,7 @@ public class MovimientosInventarioServicio {
         if (request.getId() != null) {
             ArticuloServicio.actualizarStock(
                     request.getArticuloId(),
-                    request.getCantidad() >= 0 ? request.getCantidad() : -request.getCantidad()
+                    request.isTipoMovimiento() ? request.getCantidad() : -request.getCantidad()
             );
             return true;
         }
