@@ -6,12 +6,13 @@ import java.sql.SQLException;
 
 public class CreateDatabaseAndTables {
     public static void create() {
-        String createDbSQL = "CREATE DATABASE IF NOT EXISTS hpc_db";
-        String useDbSQL = "USE hpc_db";
+        // String createDbSQL = "CREATE DATABASE IF NOT EXISTS hpc_db";
+        // String useDbSQL = "USE hpc_db";
         String permisosTableSQL =
                 "CREATE TABLE IF NOT EXISTS permisos (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "nombre VARCHAR(256) UNIQUE)";
+                "nombre VARCHAR(256) UNIQUE, " +
+                "borrado BOOLEAN DEFAULT FALSE)";
         String usuariosTableSQL =
                 "CREATE TABLE IF NOT EXISTS usuarios (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
@@ -21,21 +22,25 @@ public class CreateDatabaseAndTables {
                 "legajo INT UNIQUE NOT NULL, " +
                 "contraseña VARCHAR(256) NOT NULL, " +
                 "permiso_id INT, " +
+                "borrado BOOLEAN DEFAULT FALSE, " +
                 "FOREIGN KEY (permiso_id) REFERENCES permisos(id))";
         String sectoresTableSQL =
                 "CREATE TABLE IF NOT EXISTS sectores (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "nombre VARCHAR(100) UNIQUE NOT NULL)";
+                "nombre VARCHAR(100) UNIQUE NOT NULL, " +
+                "borrado BOOLEAN DEFAULT FALSE)";
         String subsectoresTableSQL =
                 "CREATE TABLE IF NOT EXISTS subsectores (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
                 "nombre VARCHAR(100) UNIQUE NOT NULL, " +
                 "sector_id INT, " +
+                "borrado BOOLEAN DEFAULT FALSE, " +
                 "FOREIGN KEY (sector_id) REFERENCES sectores(id))";
         String categoriasTableSQL =
                 "CREATE TABLE IF NOT EXISTS categorias (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "nombre VARCHAR(100) UNIQUE NOT NULL)";
+                "nombre VARCHAR(100) UNIQUE NOT NULL, " +
+                "borrado BOOLEAN DEFAULT FALSE)";
         String articulosTableSQL =
                 "CREATE TABLE IF NOT EXISTS articulos (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
@@ -45,13 +50,15 @@ public class CreateDatabaseAndTables {
                 "limite INT, " +
                 "fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                 "categoria_id INT, " +
+                "borrado BOOLEAN DEFAULT FALSE, " +
                 "FOREIGN KEY (categoria_id) REFERENCES categorias(id))";
         String turnosTableSQL =
                 "CREATE TABLE IF NOT EXISTS turnos (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
                 "nombre VARCHAR(100) UNIQUE NOT NULL, " +
                 "hora_inicio TIME NOT NULL, " +
-                "hora_fin TIME NOT NULL)";
+                "hora_fin TIME NOT NULL, " +
+                "borrado BOOLEAN DEFAULT FALSE)";
         String movimientosInventarioTableSQL =
                 "CREATE TABLE IF NOT EXISTS movimientos_inventario (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT, " +
@@ -81,11 +88,11 @@ public class CreateDatabaseAndTables {
             Statement stmt = conn.createStatement()) {
 
             // Crear la Base de Datos
-            stmt.executeUpdate(createDbSQL);
-            System.out.println("Base de datos creada.");
+        //     stmt.executeUpdate(createDbSQL);
+        //     System.out.println("Base de datos creada.");
 
-            // Usar BD
-            stmt.executeUpdate(useDbSQL);
+        //     // Usar BD
+        //     stmt.executeUpdate(useDbSQL);
 
             // Crear tablas independientes
             stmt.executeUpdate(permisosTableSQL);
@@ -111,12 +118,21 @@ public class CreateDatabaseAndTables {
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
 
-            String dropSql = "DROP DATABASE IF EXISTS hpc_db;";
-            stmt.execute(dropSql);
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
+            stmt.execute("DROP TABLE IF EXISTS balances");
+            stmt.execute("DROP TABLE IF EXISTS movimientos_inventario");
+            stmt.execute("DROP TABLE IF EXISTS articulos");
+            stmt.execute("DROP TABLE IF EXISTS subsectores");
+            stmt.execute("DROP TABLE IF EXISTS usuarios");
+            stmt.execute("DROP TABLE IF EXISTS turnos");
+            stmt.execute("DROP TABLE IF EXISTS categorias");
+            stmt.execute("DROP TABLE IF EXISTS sectores");
+            stmt.execute("DROP TABLE IF EXISTS permisos");
+            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
 
         } catch (SQLException e) {
-        e.printStackTrace();
-    }
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
